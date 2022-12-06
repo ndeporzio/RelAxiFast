@@ -12,8 +12,8 @@ import subprocess
 from matplotlib.lines import Line2D
 from matplotlib import rc
 
-sns.set()
-sns.set_style(style='white')
+#sns.set()
+#sns.set_style(style='white')
 rc('font', **{'serif': ['Computer Modern']})
 rc('text', usetex=True)
 matplotlib.rcParams['text.latex.preamble'] = r'\boldmath'
@@ -24,6 +24,14 @@ matplotlib.rcParams.update({
     "axes.labelpad" : 8.0,  
     "xtick.labelsize" : 60, 
     "ytick.labelsize" : 60, 
+    "xtick.major.size" : 30,
+    "xtick.major.width" : 5,
+    "xtick.minor.size" : 20,
+    "xtick.minor.width" : 3,
+    "ytick.major.size" : 30,
+    "ytick.major.width" : 5,
+    "ytick.minor.size" : 20,
+    "ytick.minor.width" : 3,
     "legend.fontsize" : 60, 
     "figure.dpi" : 100, 
     "figure.figsize" : [30, 30],

@@ -12,8 +12,8 @@ import seaborn as sns
 from matplotlib.lines import Line2D
 from matplotlib import rc
 
-sns.set()
-sns.set_style(style='white')
+#sns.set()
+#sns.set_style(style='white')
 rc('font', **{'serif': ['Computer Modern']})
 rc('text', usetex=True)
 matplotlib.rcParams['text.latex.preamble'] = r'\boldmath'
@@ -24,6 +24,14 @@ matplotlib.rcParams.update({
     "axes.labelpad" : 8.0,  
     "xtick.labelsize" : 60, 
     "ytick.labelsize" : 60, 
+    "xtick.major.size" : 30,
+    "xtick.major.width" : 5,
+    "xtick.minor.size" : 20,
+    "xtick.minor.width" : 3,
+    "ytick.major.size" : 30,
+    "ytick.major.width" : 5,
+    "ytick.minor.size" : 20,
+    "ytick.minor.width" : 3,
     "legend.fontsize" : 60, 
     "figure.dpi" : 100, 
     "figure.figsize" : [30, 30],
@@ -209,16 +217,16 @@ yplot8 = (np.power(xplot, -1.)/ref8)
 #ax1.plot(xplot, yplot4, label=r"a", color=colors[0])
 #ax1.plot(xplot, yplot2, label=r"$a \sqrt{H}$", color=colors[1])
 #ax1.plot(xplot, yplot3, label=r"$aH$", color=colors[2])
-ax1.plot(xplot, yplot1, linewidth=3., label=r"$H$", color=colors[4]) 
-ax1.plot(xplot, yplot5, linewidth=3., label=r"$k_{\rm J} \propto \sqrt{H}$", color=colors[3], zorder=10)
-ax1.plot(xplot, yplot6, linewidth=5., label=r"$k_{\rm m} \propto a^{-1}$", color='black', zorder=1) 
-ax1.plot(xplot, yplot7, linewidth=3., color='grey', alpha=0.7) 
-ax1.plot(xplot, yplot8, linewidth=3., color='grey', alpha=0.7) 
+ax1.plot(xplot, yplot1, linewidth=6., label=r"$H$", color=colors[4], alpha=0.7, zorder=2) 
+ax1.plot(xplot, yplot5, linewidth=10., label=r"$k_{\rm J} \propto \sqrt{H}$", color=colors[3], alpha=0.7, zorder=10)
+ax1.plot(xplot, yplot6, linewidth=10., label=r"$k_{\rm m} \propto a^{-1}$", color='black', alpha=0.7, zorder=3) 
+ax1.plot(xplot, yplot7, linewidth=6., color='grey', zorder=1) 
+ax1.plot(xplot, yplot8, linewidth=6., color='grey', zorder=1) 
 ax1.plot([aeq[0], aeq[0]], [min(yplot1), max(yplot1)], 
-    linewidth=5., color='black', linestyle="dashed", label=r"$a_{\rm eq}$")
+    linewidth=6., color='black', alpha=0.7, linestyle="dashed", label=r"$a_{\rm eq}$")
 ax1.plot([aosc[0], aosc[0]], [min(yplot1), max(yplot1)], 
-    linewidth=5., color='black', linestyle="dotted", label=r"$a_{\rm osc}$")
-ax1.plot([min(xplot), max(xplot)], [1., 1.], color='black', linestyle='dashdot', label=r"$m_\phi$")
+    linewidth=10., color='black', linestyle="dotted", label=r"$a_{\rm osc}$")
+ax1.plot([min(xplot), max(xplot)], [1., 1.], color='black', linewidth=10., alpha=0.7, linestyle='dashdot', label=r"$m_\phi$")
 ax1.tick_params(axis='both')
 ax1.set_xscale('log') 
 ax1.set_yscale('log') 
@@ -245,17 +253,18 @@ yplot6 = (np.power(xplot, -1.)/ref6)
 yplot7 = (np.power(xplot, -1.)/ref7)
 yplot8 = (np.power(xplot, -1.)/ref8)
 yplot9 = (np.power(xplot, -1.)/ref9)
-ax2.plot(xplot, yplot1, linewidth=3., label=r"$H$", color=colors[4]) 
-ax2.plot(xplot, yplot5, linewidth=3., label=r"$k_{\rm J} \propto \sqrt{H}$", color=colors[3])
-ax2.plot(xplot, yplot6, linewidth=5., label=r"$k_{\rm m} \propto a^{-1}$", color='black') 
-ax2.plot(xplot, yplot7, linewidth=3., color='grey', alpha=0.7) 
-ax2.plot(xplot, yplot8, linewidth=3., color='grey', alpha=0.7) 
-ax2.plot(xplot, yplot9, linewidth=3., color='grey', alpha=0.7) 
-ax2.plot([aeq[1], aeq[1]], [1.0e-5, 1.0e15], color='black', 
-    linestyle="dashed", linewidth=5., label=r"$a_{\rm eq}$")
-ax2.plot([aosc[1], aosc[1]], [1.0e-5, 1.0e15], color='black', 
-    linestyle="dotted", linewidth=5., label=r"$a_{\rm osc}$")
-ax2.plot([min(xplot), max(xplot)], [1., 1.], color='black', linestyle='dashdot', label=r"$m_\phi$")
+ax2.plot(xplot, yplot1, linewidth=6., label=r"$H$", color=colors[4], alpha=0.7, zorder=2) 
+ax2.plot(xplot, yplot5, linewidth=10., label=r"$k_{\rm J} \propto \sqrt{H}$", color=colors[3], alpha=0.7, zorder=10)
+ax2.plot(xplot, yplot6, linewidth=10., label=r"$k_{\rm m} \propto a^{-1}$", color='black', alpha=0.7,  zorder=3) 
+ax2.plot(xplot, yplot7, linewidth=6., color='grey', zorder=1) 
+ax2.plot(xplot, yplot8, linewidth=6., color='grey', zorder=1) 
+ax2.plot(xplot, yplot9, linewidth=6., color='grey', zorder=1) 
+ax2.plot([aeq[1], aeq[1]], [1.0e-5, 1.0e15], color='black', alpha=0.7, 
+    linestyle="dashed", linewidth=6., label=r"$a_{\rm eq}$")
+ax2.plot([aosc[1], aosc[1]], [1.0e-5, 1.0e15], color='black', alpha=0.7,
+    linestyle="dotted", linewidth=10., label=r"$a_{\rm osc}$")
+ax2.plot([min(xplot), max(xplot)], [1., 1.], color='black', alpha=0.7, 
+    linestyle='dashdot', linewidth=10., label=r"$m_\phi$")
 #ax2.plot(xplot[0:-1], np.diff(np.log10(yplot1))/np.diff(np.log10(xplot))) 
 ax2.tick_params(axis='both')
 ax2.set_xscale("log")

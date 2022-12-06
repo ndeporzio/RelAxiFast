@@ -12,8 +12,8 @@ import subprocess
 from matplotlib.lines import Line2D
 from matplotlib import rc
 
-sns.set()
-sns.set_style(style='white')
+#sns.set()
+#sns.set_style(style='white')
 rc('font', **{'serif': ['Computer Modern']})
 rc('text', usetex=True)
 matplotlib.rcParams['text.latex.preamble'] = r'\boldmath'
@@ -24,6 +24,14 @@ matplotlib.rcParams.update({
     "axes.labelpad" : 8.0,  
     "xtick.labelsize" : 60, 
     "ytick.labelsize" : 60, 
+    "xtick.major.size" : 30,
+    "xtick.major.width" : 5,
+    "xtick.minor.size" : 20,
+    "xtick.minor.width" : 3,
+    "ytick.major.size" : 30,
+    "ytick.major.width" : 5,
+    "ytick.minor.size" : 20,
+    "ytick.minor.width" : 3,
     "legend.fontsize" : 60, 
     "figure.dpi" : 100, 
     "figure.figsize" : [30, 50],
@@ -48,18 +56,20 @@ omega_cdm_LCDM = 0.1127
 omega_b_LCDM = 0.02226
 
 m_ax = np.array([
-    #np.power(10., -23.0),
+    np.power(10., -24.0),
     np.power(10., -25.0),
+    np.power(10., -26.0),
     np.power(10., -27.0),
+    np.power(10., -28.0),
     np.power(10., -29.0),
-    #np.power(10., -30.0),
+    np.power(10., -30.0),
     np.power(10., -31.0),
     np.power(10., -32.0),
-    #np.power(10., -32.5)
+    np.power(10., -32.5)
 ])
 omega_ax = 0.05*omega_cdm_LCDM
 sum_massive_nu = 0.
-redshifts = np.concatenate((np.array([0.01]), np.linspace(1., 10., 10))) 
+redshifts = np.concatenate((np.array([0.01, 0.7]), np.linspace(1., 10., 10))) 
 kmin = 0.9e-4
 kmax = 1.0
 Nk = 50

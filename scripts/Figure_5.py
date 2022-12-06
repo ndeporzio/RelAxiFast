@@ -12,8 +12,8 @@ import subprocess
 from matplotlib.lines import Line2D
 from matplotlib import rc
 
-sns.set()
-sns.set_style(style='white')
+#sns.set()
+#sns.set_style(style='white')
 rc('font', **{'serif': ['Computer Modern']})
 rc('text', usetex=True)
 matplotlib.rcParams['text.latex.preamble'] = r'\boldmath'
@@ -24,6 +24,14 @@ matplotlib.rcParams.update({
     "axes.labelpad" : 8.0,  
     "xtick.labelsize" : 60, 
     "ytick.labelsize" : 60, 
+    "xtick.major.size" : 30,
+    "xtick.major.width" : 5,
+    "xtick.minor.size" : 0,
+    "xtick.minor.width" : 3,
+    "ytick.major.size" : 30,
+    "ytick.major.width" : 5,
+    "ytick.minor.size" : 20,
+    "ytick.minor.width" : 3,
     "legend.fontsize" : 60, 
     "figure.dpi" : 100, 
     "figure.figsize" : [30, 30],
@@ -144,12 +152,27 @@ for m_idx, m_val in enumerate(M_ax):
         )
 
 
+def kjeans0(mphi, H0):
+    # Jeans scale at z=0 in units [Mpc^-1]
+    # mphi entered in [eV]
+    # H0 entered in [km/s/Mpc]
+    return np.sqrt(mphi*H0*5.21614*np.power(10., 23.))
+
 plot_x = np.geomspace(10**-3, 10**0.3, 100) #Units: [h Mpc^-1]
 colors = sns.color_palette("magma", len(omega_ax))
 fig, ax = plt.subplots(1, 1)
 linestyles=["solid", "dashed"]
 for m_idx, m_val in enumerate(M_ax):
     #ref = np.loadtxt(rfpath+"scripts/2104.07802_FIG2_REF_"+str(m_idx)+".csv", delimiter=",")
+    ax.plot(
+        [kjeans0(m_val, 100.*h_lcdm), kjeans0(m_val, 100.*h_lcdm)],
+        [0.5, 1.05],
+        #label=r'$\omega_{\phi, 0}/\omega_{{\rm d}, 0} = '+f'{omega_ax[o_idx]/omega_cdm_LCDM:.2f}'+r"$",
+        color='black',
+        linestyle=linestyles[m_idx],
+        linewidth=5.0
+    )
+
     for o_idx, o_val in enumerate(omega_ax):
         idx = len(omega_ax)*m_idx + o_idx
 
@@ -206,7 +229,8 @@ for m_idx, m_val in enumerate(M_ax):
     ax.set_ylabel(r'$P_{\rm m}/P_{\mathrm{m, }\Lambda \mathrm{CDM}}$')
     ax.grid(False, which='both', axis='both')
     ax.tick_params(axis='both')
-
+    ax.set_ylim((0.5, 1.05))
+    ax.set_xlim((plot_x[0],plot_x[-1]))
     if (m_idx==0):
         ax.legend()
 #        ax[m_idx].title((r'$M_\chi = 10^{'+f'{np.log10(m_val):.1f}'+r'}$ eV'))

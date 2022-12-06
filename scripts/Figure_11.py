@@ -23,8 +23,8 @@ import subprocess
 from matplotlib.lines import Line2D
 from matplotlib import rc
 
-sns.set()
-sns.set_style(style='white')
+#sns.set()
+#sns.set_style(style='white')
 rc('font', **{'serif': ['Computer Modern']})
 rc('text', usetex=True)
 matplotlib.rcParams['text.latex.preamble'] = r'\boldmath'
@@ -35,6 +35,14 @@ matplotlib.rcParams.update({
     "axes.labelpad" : 8.0,  
     "xtick.labelsize" : 60, 
     "ytick.labelsize" : 60, 
+    "xtick.major.size" : 30,
+    "xtick.major.width" : 5,
+    "xtick.minor.size" : 20,
+    "xtick.minor.width" : 3,
+    "ytick.major.size" : 30,
+    "ytick.major.width" : 5,
+    "ytick.minor.size" : 20,
+    "ytick.minor.width" : 3,
     "legend.fontsize" : 60, 
     "figure.dpi" : 100, 
     "figure.figsize" : [30, 30],
@@ -52,10 +60,10 @@ omega_b_LCDM = 0.02226 # Units: none
 h_LCDM = 0.70148 # Units: none 
 m_ax = np.logspace(-32., -22., 41) # Units: eV
 m_ax = np.array([
-    np.power(10., -32.00),
-    np.power(10., -31.75),
-    np.power(10., -31.50),
-    np.power(10., -31.25),
+    #np.power(10., -32.00),
+    #np.power(10., -31.75),
+    #np.power(10., -31.50),
+    #np.power(10., -31.25),
     np.power(10., -31.00),
     np.power(10., -30.75),
     np.power(10., -30.50),
@@ -63,50 +71,51 @@ m_ax = np.array([
     np.power(10., -30.00),
     np.power(10., -29.75),
 
-    np.power(10., -29.70),
-    np.power(10., -29.60),
+    #np.power(10., -29.70),
+    #np.power(10., -29.60),
     np.power(10., -29.50),
-    np.power(10., -29.40),
-    np.power(10., -29.30),
+    #np.power(10., -29.40),
+    #np.power(10., -29.30),
     np.power(10., -29.25),
-    np.power(10., -29.20),
-    np.power(10., -29.10),
+    #np.power(10., -29.20),
+    #np.power(10., -29.10),
 
     np.power(10., -29.00),
     np.power(10., -28.75),
     np.power(10., -28.50),
     np.power(10., -28.25),
     np.power(10., -28.00),
-    np.power(10., -27.75),
-    np.power(10., -27.50),
-    np.power(10., -27.25),
-    np.power(10., -27.00),
-    np.power(10., -26.75),
-    np.power(10., -26.50),
-    np.power(10., -26.25),
-    np.power(10., -26.00),
-    np.power(10., -25.75),
-    np.power(10., -25.50),
-    np.power(10., -25.25),
-    np.power(10., -25.00),
-    np.power(10., -24.75),
-    np.power(10., -24.50),
-    np.power(10., -24.25),
-    np.power(10., -24.00),
-    np.power(10., -23.75),
-    np.power(10., -23.50),
-    np.power(10., -23.25),
-    np.power(10., -23.00),
-    np.power(10., -22.75),
-    np.power(10., -22.50),
-    np.power(10., -22.25),
-    np.power(10., -22.00),
+    #np.power(10., -27.75),
+    #np.power(10., -27.50),
+    #np.power(10., -27.25),
+    #np.power(10., -27.00),
+    #np.power(10., -26.75),
+    #np.power(10., -26.50),
+    #np.power(10., -26.25),
+    #np.power(10., -26.00),
+    #np.power(10., -25.75),
+    #np.power(10., -25.50),
+    #np.power(10., -25.25),
+    #np.power(10., -25.00),
+    #np.power(10., -24.75),
+    #np.power(10., -24.50),
+    #np.power(10., -24.25),
+    #np.power(10., -24.00),
+    #np.power(10., -23.75),
+    #np.power(10., -23.50),
+    #np.power(10., -23.25),
+    #np.power(10., -23.00),
+    #np.power(10., -22.75),
+    #np.power(10., -22.50),
+    #np.power(10., -22.25),
+    #np.power(10., -22.00),
 ])
 
-omega_ax = np.concatenate(( # Units: none
-    np.array([1.0e-9*omega_cdm_LCDM]), 
-    np.linspace(0.010, 0.100, 37)*omega_cdm_LCDM 
-))
+omega_ax = np.array([0.090, 0.095])*omega_cdm_LCDM 
+#omega_ax = np.concatenate(( # Units: none
+#    np.array([1.0e-9*omega_cdm_LCDM]), 
+#    np.linspace(0.010, 0.100, 37)*omega_cdm_LCDM 
+#))
 print("Axion masses: ", m_ax)
 print("Axion abundances (% CDM): ", omega_ax/omega_cdm_LCDM)
 sum_massive_nu = 0. # Units: eV
@@ -216,9 +225,9 @@ for ax_idx, ax_val in enumerate(m_ax):
 
         # Check if data already exists
         b1e_path = (rfpath+"plots/Figure_11_b1e_logmaxion"+f"{np.log10(ax_val):.3f}"
-            +"_omegaaxion"+f"{o_val:.6f}"+".txt")
+            +"_omegaaxion"+f"{o_val:.6f}"+"_zi400.txt")
         b1l_path = (rfpath+"plots/Figure_11_b1l_logmaxion"+f"{np.log10(ax_val):.3f}"
-            +"_omegaaxion"+f"{o_val:.6f}"+".txt")
+            +"_omegaaxion"+f"{o_val:.6f}"+"zi400.txt")
 
         if (os.path.exists(b1e_path) and os.path.exists(b1l_path) and (use_existing_data==True)): 
             print("Loading existing data...")
@@ -237,7 +246,7 @@ for ax_idx, ax_val in enumerate(m_ax):
             while lines_match_flag==False:    
                 try:      
                     os.system('./relicfast run.ini')
-                    with open(rfpath+"/Boltzmann_2/transfer_files_0/_transfer_out_z200.000", 'r') as fp:
+                    with open(rfpath+"/Boltzmann_2/transfer_files_0/_transfer_out_z0.000", 'r') as fp:
                         ac_lines_out = sum(1 for line in fp)
                     fp.close()
                 except: 
@@ -283,9 +292,9 @@ for ax_idx, ax_val in enumerate(m_ax):
     
                 if data_save_level>1: 
                     np.savetxt((rfpath+"plots/Figure_11_b1e_logmaxion"+f"{np.log10(ax_val):.3f}"
-                        +"_omegaaxion"+f"{o_val:.6f}"+".txt"), data_eulbias)
+                        +"_omegaaxion"+f"{o_val:.6f}"+"_zi400.txt"), data_eulbias)
                     np.savetxt((rfpath+"plots/Figure_11_b1l_logmaxion"+f"{np.log10(ax_val):.3f}"
-                        +"_omegaaxion"+f"{o_val:.6f}"+".txt"), data_lagbias)
+                        +"_omegaaxion"+f"{o_val:.6f}"+"_zi400.txt"), data_lagbias)
             else: 
                 data_eulbias = np.array([[1.0e-4, 0.], [1.0, 0.]])
                 data_lagbias = np.array([[1.0e-4, 0.], [1.0, 0.]])
@@ -305,7 +314,7 @@ for ax_idx, ax_val in enumerate(m_ax):
             +' ./axionCAMB_Current/params_collapse_'+str(ax_idx*len(omega_ax)+o_idx)+'.ini'
         )  
 
-np.savetxt(rfpath+"plots/Figure_11_Failures.txt", np.array(spontaneous_failures, dtype='int'))
+np.savetxt(rfpath+"plots/Figure_11_Failures_zi400.txt", np.array(spontaneous_failures, dtype='int'))
 print("Spontaneous failures: ", np.array(spontaneous_failures, dtype='int'))
 
 def fmt(x):
@@ -314,10 +323,10 @@ def fmt(x):
 
 for kidx, kval in enumerate(krefs):
     if data_save_level>0:  
-        np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}"+".txt", b1e[kidx])
-        np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+".txt", b1l[kidx])
-        np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}"+".txt", b1e_step[kidx])
-        np.savetxt(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+".txt", b1l_step[kidx])
+        np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e[kidx])
+        np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l[kidx])
+        np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e_step[kidx])
+        np.savetxt(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l_step[kidx])
 
     Z = np.transpose(np.nan_to_num(b1l[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
@@ -333,7 +342,7 @@ for kidx, kval in enumerate(krefs):
     ax.set_ylabel("$\omega_\phi / \omega_d$")
     ax.set_ylim((0.,0.1)) 
     cbar = plt.colorbar(hmap)
-    plt.savefig(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+".png")
+    plt.savefig(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.png")
 
     Z = np.transpose(np.nan_to_num(b1l_step[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
@@ -343,7 +352,7 @@ for kidx, kval in enumerate(krefs):
     #Z = interp(xn,yn)
     #X, Y = np.meshgrid(xn, yn) 
     fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(b1l_step), vmax=np.max(b1l_step), shading="auto")
+    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(b1l_step), vmax=np.max(b1l_step), shading="auto", cmap='magma')
     if (np.max(Z)>1.01):
         CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
         ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
@@ -355,6 +364,6 @@ for kidx, kval in enumerate(krefs):
     cbar.set_label(label=(
         r"$b^1_L(k)~/~b^1_L(k_{\rm ref})$")#, size=50
     )
-    plt.savefig(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+".png")
+    plt.savefig(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.png")
     if (kidx==(len(krefs)-1)): 
-        plt.savefig(rfpath+"plots/Figure_11.png") 
+        plt.savefig(rfpath+"plots/Figure_11_zi400.png") 

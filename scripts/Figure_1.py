@@ -12,8 +12,8 @@ import subprocess
 from matplotlib.lines import Line2D
 from matplotlib import rc
 
-sns.set()
-sns.set_style(style='white')
+#sns.set()
+#sns.set_style(style='white')
 rc('font', **{'serif': ['Computer Modern']})
 rc('text', usetex=True)
 matplotlib.rcParams['text.latex.preamble'] = r'\boldmath'
@@ -21,9 +21,21 @@ matplotlib.rcParams.update({
     "font.weight" : "bold",
     "font.size" : 110,
     "axes.labelsize" : 110,
-    "axes.labelpad" : 8.0,  
+    "axes.labelpad" : 10.0,  
     "xtick.labelsize" : 60, 
-    "ytick.labelsize" : 60, 
+    "xtick.major.size" : 30,
+    "xtick.major.width" : 5,
+    "xtick.major.pad" : 15, 
+    "xtick.minor.size" : 20,
+    "xtick.minor.width" : 3,
+    "xtick.direction" : "out", 
+    "ytick.labelsize" : 60,
+    "ytick.major.size" : 30,
+    "ytick.major.width" : 5,
+    "ytick.major.pad" : 10,   
+    "ytick.minor.size" : 20,
+    "ytick.minor.width" : 3,
+    "ytick.direction" : "out", 
     "legend.fontsize" : 60, 
     "figure.dpi" : 100, 
     "figure.figsize" : [30, 30],
@@ -52,7 +64,7 @@ omega_nu = M_nu/93.2
 omega_cdm_LCDM = 0.12
 omega_b_LCDM = 0.022
 Omega_M_LCDM = (omega_b_LCDM + omega_cdm_LCDM)/np.power(h_lcdm, 2.)
-
+print(Omega_M_LCDM)
 Omega_ax = (
     np.array([1.0e-9, 0.01, 0.05, 0.1])
     *omega_cdm_LCDM
@@ -178,20 +190,30 @@ dlogydlogx2 = 0.50
 b2 = osc_interp(-22.)-dlogydlogx2*(-22.) 
 ax.plot(plot_x, np.power(10., np.log10(plot_x)*dlogydlogx1 + b1), linestyle='dashed', color='tab:orange', linewidth=5)
 ax.plot(plot_x, np.power(10., np.log10(plot_x)*dlogydlogx2 + b2), linestyle='dashed', color='tab:cyan', linewidth=5)
-ax.set_xscale('log')
 ax.set_yscale('log')
-ax.set_xlabel(r'$m_\phi ~{\rm [eV]}$')
 ax.set_ylabel(r'$z_{\rm osc}$')
 ax.set_yticks(np.logspace(-1, 6, 8))
-ax.grid(False)
+ax.set_xscale('log')
+ax.set_xlabel(r'$m_\phi ~{\rm [eV]}$')
+ax.set_xticks(np.logspace(-32, -22, 6))
+#ax.grid(False)
 ax.set_ylim((0.09, 2.0e6))
-ax.tick_params(axis='both')
+ax.set_xlim((1.0e-33, 1.0e-21))
+
+ax.fill_between([1.0e-33, 1.0e-21], [0.09, 0.09], [200., 200.], color='grey', alpha=0.5)
+ax.fill_between([1.0e-33, 1.0e-21], [1100, 1100], [1.3*np.power(10., 6.), 1.3*np.power(10., 6.)], color='red', alpha=0.1)
+#ax.plot([1.0e-33, 1.0e-21], [1100, 1100], color='red', alpha=0.5, linewidth=5)
+#ax.plot([1.0e-33, 1.0e-21], [1.3*np.power(10., 6.), 1.3*np.power(10., 6.)], color='red', alpha=0.5, linewidth=5, linestyle='dashed')
+
 ax_twin = ax.twinx()
+
 #ax_twin.plot((plot_x), (1./(plot_y+1.)), color='cyan', linestyle='dashed')
-ax_twin.set_xscale('log')
+#ax_twin.set_xscale('log')
+#ax_twin.set_xticks(np.logspace(-32, -22, 6))
 ax_twin.set_yscale('log')
-ax_twin.grid(False)
-ax_twin.tick_params(axis='both')
+#ax_twin.grid(False)
+#ax_twin.tick_params(axis='both')
+#ax_twin.tick_params(axis='x', direction="in", length=50, width=5)
 ax_twin.set_ylabel(r"${a}_{\rm osc}$")
 ax_twin.set_ylim(ax.get_ylim())
 ax_twin.set_yticks(np.concatenate((

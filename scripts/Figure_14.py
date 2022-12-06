@@ -50,7 +50,7 @@ outpath = "/Users/nicholasdeporzio/Desktop/"
 sum_massive_nu = 0.
 redshift = 0.65
 kmin = 1.0e-5
-kmax = 0.5
+kmax = 1.1
 Nk = 50
 
 omega_cdm_LCDM = 0.1127
@@ -62,11 +62,11 @@ Omega_M_LCDM = 0.27464
 omega_nu = sum_massive_nu/93.2
 
 kref = np.power(10., -4.) 
-omega_ax = np.array([omega_cdm_LCDM*1.0e-12, omega_cdm_LCDM*0.05])
+omega_ax = np.array([omega_cdm_LCDM*1.0e-12, omega_cdm_LCDM*0.022])
 m_ax = np.array([
-    np.power(10., -32.),
+    np.power(10., -29.),
     np.power(10., -28.),
-    np.power(10., -26.)
+    np.power(10., -27.)
 ])
 
 f_cdm_LCDM = omega_cdm_LCDM/(omega_cdm_LCDM + omega_b_LCDM)
@@ -159,6 +159,8 @@ for m_idx, m_val in enumerate(m_ax):
                 "m_ax = 1.0e-22", "m_ax = "+f'{m_val:.6e}'
             ).replace(
                 "kbot = 1e-4", "kbot = "+f'{kmin:.3e}'
+            ).replace(
+                "ktop = 0.7", "ktop = "+f'{kmax:.3e}'
             )
             
             
@@ -254,9 +256,9 @@ for m_idx, m_val in enumerate(m_ax):
 #####################################
 
 colors = sns.color_palette('magma', len(m_ax))
-kplot = np.geomspace(10**-4.0, 0.1, 100)
+kplot = np.geomspace(10**-3.0, 1.0, 100)
 
-fig, ax = plt.subplots(1, 1)
+fig, (ax1, ax2, ax3) = plt.subplots(3, 1, sharex=True, gridspec_kw={'height_ratios': [3, 1, 1]})
 for m_idx, m_val in enumerate(m_ax): 
     for oax_idx, oax_val in enumerate(omega_ax): 
         k_vals = relicfast_pss[m_idx*len(omega_ax)+oax_idx][:, 0]
@@ -285,14 +287,14 @@ for m_idx, m_val in enumerate(m_ax):
             yplot1 = Rmm/Rmm_ref
             yplot2 = Rhh/Rhh_ref    
      
-            ax.plot(#Matter
+            ax1.plot(#Matter
                 kplot,
                 yplot1, 
                 color=colors[m_idx], 
                 linewidth=5., 
                 linestyle='dashed'
             )
-            ax.plot(#Halo 
+            ax1.plot(#Halo 
                 kplot,
                 yplot2, 
                 label=(r"$m_\phi = 10^{"+f"{np.log10(m_val):.0f}"+r"} {\rm ~eV}$"), 
@@ -300,18 +302,37 @@ for m_idx, m_val in enumerate(m_ax):
                 linewidth=5.,
                 linestyle='solid'
             )
+            ax2.plot(
+                kplot, 
+                yplot2-yplot1, 
+                color=colors[m_idx], 
+                linewidth=5., 
+                linestyle='dotted'
+            )
+            ax3.plot(
+                kplot, 
+                (yplot2-yplot1)/yplot1, 
+                color=colors[m_idx], 
+                linewidth=5., 
+                linestyle='dotted'
+            )
+ax1.axvspan(0.025*h, 0.23*h, alpha=0.5, color='grey')
 #ax.plot([min(kplot), max(kplot)], [1., 1.], color='black', linewidth=5.)
-ax.set_xlim((min(kplot), max(kplot)))
+ax1.set_xlim((min(kplot), max(kplot)))
 #ax.plot([0.7*0.015, 0.7*0.015], [0.999, 1.008], color='red', label=r'$k_{eq}$')
 #ax.plot([0.024, 0.024], [0.999, 1.008], color='blue', label=r'$k_{*}$')
-ax.set_xscale('log')
-ax.set_xlabel(r'$k ~[{\rm Mpc}^{-1}]$')
-ax.set_ylabel(r'$R(k)/R(k_{\rm ref})$')
-ax.set_ylim((0.69, 1.01))
-ax.tick_params(axis='both')
-ax.legend()
-ax.grid(False)
-plt.savefig(rfpath+"plots/Figure_8.png")
+ax1.set_xscale('log')
+ax1.set_ylabel(r'$R(k)/R(k_{\rm ref})$')
+ax1.set_ylim((0.69, 1.01))
+ax1.tick_params(axis='both')
+ax1.legend()
+ax1.grid(False)
+ax2.axvspan(0.025*h, 0.23*h, alpha=0.5, color='grey')
+ax2.set_ylabel(r'$\Delta_{\rm H-M}$', fontsize=30)
+ax3.axvspan(0.025*h, 0.23*h, alpha=0.5, color='grey')
+ax3.set_ylabel(r'$\bar{\Delta}_{\rm (H-M)/M}$', fontsize=30)
+ax3.set_xlabel(r'$k ~[{\rm Mpc}^{-1}]$')
+plt.savefig(rfpath+"plots/Figure_14.png")
 
 #fig, ax = plt.subplots(1, 1)
 #for oax_idx, oax_val in enumerate(omega_ax): 
