@@ -129,7 +129,7 @@ if (oncluster==True):
         np.savetxt(savepath+"omega_ax.txt", omega_ax) 
     midx = runidx%len(m_ax)
     oidx = runidx//len(m_ax) 
-    m_ax = np.array([m_ax[midx]]
+    m_ax = np.array([m_ax[midx]])
     omega_ax = np.array([omega_ax[o_idx]])
 
 
