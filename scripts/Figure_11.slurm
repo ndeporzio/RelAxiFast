@@ -24,10 +24,9 @@ else
   echo "Installing RelAxiFast..."
   cd "${SCRATCH}/dvorkin_lab/ndeporzio"
   git clone git@github.com:ndeporzio/RelAxiFast.git $RELAXIFAST_DIR
-  git checkout cluster
   cd $RELAXIFAST_DIR
+  git checkout cluster
   module load gcc/10.2.0-fasrc01
-  alias gcc-10=/n/helmod/apps/centos7/Core/gcc/10.2.0-fasrc01/bin/gcc
   python scripts/compile_RelAxiFast.py
   ./relicfast 2006.09395.ini
   echo $RELAXIFAST_DIR
