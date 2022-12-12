@@ -19,13 +19,14 @@ from matplotlib import rc
 
 #Path to RelicFast install
 rfpath = os.getenv("RELAXIFAST_DIR")
-runidx = os.getenv("SLURM_ARRAY_TASK_ID")
 savepath = os.getenv("STORAGE_DIR")
-oncluster=True
 
 if (rfpath==None): 
     rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelicFast.nosync/"
     oncluster=False
+else: 
+    runidx = int(os.getenv("SLURM_ARRAY_TASK_ID"))
+    oncluster=True
 
 #sns.set()
 #sns.set_style(style='white')
