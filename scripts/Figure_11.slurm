@@ -28,7 +28,6 @@ else
   git checkout cluster
   module load gcc/10.2.0-fasrc01
   python scripts/compile_RelAxiFast.py
-  ./relicfast 2006.09395.ini
   echo $RELAXIFAST_DIR
 fi
 
@@ -51,8 +50,8 @@ export RELAXIFAST_DIR
  
 
 ## RUN PROGRAM ##                          
-#mkdir -p "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"                                     
-#python $RELAXIFAST_DIR/scripts/Figure_11.py >> "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}/FIG11_${SLURM_ARRAY_TASK_ID}.scriptout" 
-#cp "$RELAXIFAST_DIR/output/result-0/*" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"
-#mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.out" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"
-#mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.err" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"   
+mkdir -p "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"                                     
+python $RELAXIFAST_DIR/scripts/Figure_11.py >> "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}/FIG11_${SLURM_ARRAY_TASK_ID}.scriptout" 
+cp "$RELAXIFAST_DIR/output/result-0/*" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"
+mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.out" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"
+mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.err" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"   

@@ -1,13 +1,6 @@
 # NOTES! Output will be save in the `plots/` directory of your
 # RelicFast install location, which you should specify below.
  
-######################################################
-####    EDIT THESE LINES FOR YOUR SYSTEM 
-######################################################
-
-#Path to RelicFast install
-rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelicFast.nosync/"
-
 
 ######################################################
 ####         USER INPUTS
@@ -22,6 +15,17 @@ import seaborn as sns
 import subprocess
 from matplotlib.lines import Line2D
 from matplotlib import rc
+
+
+#Path to RelicFast install
+rfpath = os.getenv["RELAXIFAST_DIR"]
+runidx = os.getenv["SLURM_ARRAY_TASK_ID"]
+savepath = os.getenv["STORAGE_DIR"]
+oncluster=True
+
+if (rfpath==None): 
+    rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelicFast.nosync/"
+    oncluster=False
 
 #sns.set()
 #sns.set_style(style='white')
@@ -51,7 +55,7 @@ matplotlib.rcParams.update({
     "savefig.pad_inches" : 0.1
 
 })
-use_existing_data=True
+use_existing_data=False
 data_save_level=2
 
 # Set cosmological parameters 
@@ -59,65 +63,76 @@ omega_cdm_LCDM = 0.1127 # Units: none
 omega_b_LCDM = 0.02226 # Units: none
 h_LCDM = 0.70148 # Units: none 
 m_ax = np.logspace(-32., -22., 41) # Units: eV
-m_ax = np.array([
-    #np.power(10., -32.00),
-    #np.power(10., -31.75),
-    #np.power(10., -31.50),
-    #np.power(10., -31.25),
-    np.power(10., -31.00),
-    np.power(10., -30.75),
-    np.power(10., -30.50),
-    np.power(10., -30.25),
-    np.power(10., -30.00),
-    np.power(10., -29.75),
+#m_ax = np.array([
+#    np.power(10., -32.00),
+#    np.power(10., -31.75),
+#    np.power(10., -31.50),
+#    np.power(10., -31.25),
+#    np.power(10., -31.00),
+#    np.power(10., -30.75),
+#    np.power(10., -30.50),
+#    np.power(10., -30.25),
+#    np.power(10., -30.00),
+#    np.power(10., -29.75),
+#
+#    np.power(10., -29.70),
+#    np.power(10., -29.60),
+#    np.power(10., -29.50),
+#    np.power(10., -29.40),
+#    np.power(10., -29.30),
+#    np.power(10., -29.25),
+#    np.power(10., -29.20),
+#    np.power(10., -29.10),
+#
+#    np.power(10., -29.00),
+#    np.power(10., -28.75),
+#    np.power(10., -28.50),
+#    np.power(10., -28.25),
+#    np.power(10., -28.00),
+#    np.power(10., -27.75),
+#    np.power(10., -27.50),
+#    np.power(10., -27.25),
+#    np.power(10., -27.00),
+#    np.power(10., -26.75),
+#    np.power(10., -26.50),
+#    np.power(10., -26.25),
+#    np.power(10., -26.00),
+#    np.power(10., -25.75),
+#    np.power(10., -25.50),
+#    np.power(10., -25.25),
+#    np.power(10., -25.00),
+#    np.power(10., -24.75),
+#    np.power(10., -24.50),
+#    np.power(10., -24.25),
+#    np.power(10., -24.00),
+#    np.power(10., -23.75),
+#    np.power(10., -23.50),
+#    np.power(10., -23.25),
+#    np.power(10., -23.00),
+#    np.power(10., -22.75),
+#    np.power(10., -22.50),
+#    np.power(10., -22.25),
+#    np.power(10., -22.00),
+#])
 
-    #np.power(10., -29.70),
-    #np.power(10., -29.60),
-    np.power(10., -29.50),
-    #np.power(10., -29.40),
-    #np.power(10., -29.30),
-    np.power(10., -29.25),
-    #np.power(10., -29.20),
-    #np.power(10., -29.10),
-
-    np.power(10., -29.00),
-    np.power(10., -28.75),
-    np.power(10., -28.50),
-    np.power(10., -28.25),
-    np.power(10., -28.00),
-    #np.power(10., -27.75),
-    #np.power(10., -27.50),
-    #np.power(10., -27.25),
-    #np.power(10., -27.00),
-    #np.power(10., -26.75),
-    #np.power(10., -26.50),
-    #np.power(10., -26.25),
-    #np.power(10., -26.00),
-    #np.power(10., -25.75),
-    #np.power(10., -25.50),
-    #np.power(10., -25.25),
-    #np.power(10., -25.00),
-    #np.power(10., -24.75),
-    #np.power(10., -24.50),
-    #np.power(10., -24.25),
-    #np.power(10., -24.00),
-    #np.power(10., -23.75),
-    #np.power(10., -23.50),
-    #np.power(10., -23.25),
-    #np.power(10., -23.00),
-    #np.power(10., -22.75),
-    #np.power(10., -22.50),
-    #np.power(10., -22.25),
-    #np.power(10., -22.00),
-])
-
-omega_ax = np.array([0.090, 0.095])*omega_cdm_LCDM 
-#omega_ax = np.concatenate(( # Units: none
-#    np.array([1.0e-9*omega_cdm_LCDM]), 
-#    np.linspace(0.010, 0.100, 37)*omega_cdm_LCDM 
-#))
+#omega_ax = np.array([0.090, 0.095])*omega_cdm_LCDM 
+omega_ax = np.concatenate(( # Units: none
+    np.array([1.0e-9*omega_cdm_LCDM]), 
+    np.linspace(0.010, 0.100, 10)*omega_cdm_LCDM 
+))
 print("Axion masses: ", m_ax)
 print("Axion abundances (% CDM): ", omega_ax/omega_cdm_LCDM)
+
+if (oncluster==True):
+    if (runidx==1): 
+        np.savetxt(savepath+"m_ax.txt", m_ax)
+        np.savetxt(savepath+"omega_ax.txt", omega_ax) 
+    midx = runidx%len(m_ax)
+    oidx = runidx//len(m_ax) 
+    m_ax = np.array([m_ax[midx]]
+    omega_ax = np.array([omega_ax[o_idx]])
+
+
 sum_massive_nu = 0. # Units: eV
 omega_nu = sum_massive_nu/93.2 # Units: none
 redshift = 0.65 # Units: none
@@ -317,53 +332,54 @@ for ax_idx, ax_val in enumerate(m_ax):
 np.savetxt(rfpath+"plots/Figure_11_Failures_zi400.txt", np.array(spontaneous_failures, dtype='int'))
 print("Spontaneous failures: ", np.array(spontaneous_failures, dtype='int'))
 
-def fmt(x):
-    s = f"{(x-1.)*100.:.0f}"
-    return rf"${s} \%$" if plt.rcParams["text.usetex"] else f"{s} %"
-
-for kidx, kval in enumerate(krefs):
-    if data_save_level>0:  
-        np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e[kidx])
-        np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l[kidx])
-        np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e_step[kidx])
-        np.savetxt(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l_step[kidx])
-
-    Z = np.transpose(np.nan_to_num(b1l[kidx]))
-    X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
-    #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
-    #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
-    #yn = np.arange(np.min(omega_ax/omega_cdm_LCDM), np.max(omega_ax/omega_cdm_LCDM), .001)
-    #Z = interp(xn,yn)
-    #X, Y = np.meshgrid(xn, yn) 
-    fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(Z), vmax=np.max(Z), shading="auto")
-    ax.tick_params(axis='both')
-    ax.set_xlabel(r"$\log{m_\phi / {\rm [eV]}}$")
-    ax.set_ylabel("$\omega_\phi / \omega_d$")
-    ax.set_ylim((0.,0.1)) 
-    cbar = plt.colorbar(hmap)
-    plt.savefig(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.png")
-
-    Z = np.transpose(np.nan_to_num(b1l_step[kidx]))
-    X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
-    #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
-    #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
-    #yn = np.arange(np.min(omega_ax/omega_cdm_LCDM), np.max(omega_ax/omega_cdm_LCDM), .001)
-    #Z = interp(xn,yn)
-    #X, Y = np.meshgrid(xn, yn) 
-    fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(b1l_step), vmax=np.max(b1l_step), shading="auto", cmap='magma')
-    if (np.max(Z)>1.01):
-        CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
-        ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
-    ax.tick_params(axis='both')
-    ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
-    ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
-    ax.set_ylim((0.,0.1)) 
-    cbar = plt.colorbar(hmap)
-    cbar.set_label(label=(
-        r"$b^1_L(k)~/~b^1_L(k_{\rm ref})$")#, size=50
-    )
-    plt.savefig(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.png")
-    if (kidx==(len(krefs)-1)): 
-        plt.savefig(rfpath+"plots/Figure_11_zi400.png") 
+if (oncluster==False): 
+    def fmt(x):
+        s = f"{(x-1.)*100.:.0f}"
+        return rf"${s} \%$" if plt.rcParams["text.usetex"] else f"{s} %"
+    
+    for kidx, kval in enumerate(krefs):
+        if data_save_level>0:  
+            np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e_step[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l_step[kidx])
+    
+        Z = np.transpose(np.nan_to_num(b1l[kidx]))
+        X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+        #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
+        #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
+        #yn = np.arange(np.min(omega_ax/omega_cdm_LCDM), np.max(omega_ax/omega_cdm_LCDM), .001)
+        #Z = interp(xn,yn)
+        #X, Y = np.meshgrid(xn, yn) 
+        fig, ax = plt.subplots(1,1)
+        hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(Z), vmax=np.max(Z), shading="auto")
+        ax.tick_params(axis='both')
+        ax.set_xlabel(r"$\log{m_\phi / {\rm [eV]}}$")
+        ax.set_ylabel("$\omega_\phi / \omega_d$")
+        ax.set_ylim((0.,0.1)) 
+        cbar = plt.colorbar(hmap)
+        plt.savefig(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.png")
+    
+        Z = np.transpose(np.nan_to_num(b1l_step[kidx]))
+        X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+        #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
+        #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
+        #yn = np.arange(np.min(omega_ax/omega_cdm_LCDM), np.max(omega_ax/omega_cdm_LCDM), .001)
+        #Z = interp(xn,yn)
+        #X, Y = np.meshgrid(xn, yn) 
+        fig, ax = plt.subplots(1,1)
+        hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(b1l_step), vmax=np.max(b1l_step), shading="auto", cmap='magma')
+        if (np.max(Z)>1.01):
+            CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
+            ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
+        ax.tick_params(axis='both')
+        ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+        ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+        ax.set_ylim((0.,0.1)) 
+        cbar = plt.colorbar(hmap)
+        cbar.set_label(label=(
+            r"$b^1_L(k)~/~b^1_L(k_{\rm ref})$")#, size=50
+        )
+        plt.savefig(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.png")
+        if (kidx==(len(krefs)-1)): 
+            plt.savefig(rfpath+"plots/Figure_11_zi400.png") 
