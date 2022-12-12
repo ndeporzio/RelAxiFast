@@ -478,7 +478,7 @@ end if
 ! Run axion background evolution and then with arrays in hand for interpolation, run the regular CAMB
 call   w_evolve(P, badflag)
 
-open(unit=35, file="/Users/nicholasdeporzio/Downloads/axion_cs2_1.dat", action="write", status="replace")
+open(unit=35, file="./axion_cs2_1.dat", action="write", status="replace")
 do i=1,5000
    write(35,*) dexp(P%loga_table(i)), P%cs2_table(i)
 end do

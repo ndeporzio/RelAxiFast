@@ -521,18 +521,18 @@ a_final=1.0d0
    end forall
  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
 
-open(unit=40, file="/Users/nicholasdeporzio/Downloads/axion_dloga.dat", action="write", status="replace")
+open(unit=40, file="./axion_dloga.dat", action="write", status="replace")
 write(40,*) dloga
 close(40)
 
-open(unit=39, file="/Users/nicholasdeporzio/Downloads/axion_a.dat", action="write", status="replace")
+open(unit=39, file="./axion_a.dat", action="write", status="replace")
 write(39,*) "log(a)", "a"
 do i=1,ntable
    write(39,*) Params%loga_table(i), a_arr(i)
 end do
 close(39)
 
-open(unit=38, file="/Users/nicholasdeporzio/Downloads/axion_rhocrit.dat", action="write", status="replace")
+open(unit=38, file="./axion_rhocrit.dat", action="write", status="replace")
 write(38,*) rhocrit
 close(38)
 
@@ -934,7 +934,7 @@ endif
 enddo
 !!!!!!!!!
 
-open(unit=33, file="/Users/nicholasdeporzio/Downloads/axion_cad2.dat", action="write", status="replace")
+open(unit=33, file="./axion_cad2.dat", action="write", status="replace")
 do i=1,ntable
    write(33,*) a_arr(i), Params%cs2_table(i), littlehfunc(i), v_vec(1, i), v_vec(2, i) 
 end do
@@ -961,7 +961,7 @@ call spline_out(eq_arr(1:ntable),Params%loga_table(1:ntable),&
 	endif
 !!!!!!!
 
-open(unit=36, file="/Users/nicholasdeporzio/Downloads/axion_grhoax_2.dat", action="write", status="replace")
+open(unit=36, file="./axion_grhoax_2.dat", action="write", status="replace")
 do i=1,ntable
    write(36,*) dexp(Params%loga_table(i)), Params%grhoax_table(i)
 end do
@@ -986,7 +986,7 @@ Params%grhoax_table=dlog10(dexp(Params%grhoax_table))
 !!! RH
 
 
-open(unit=983, file="/Users/nicholasdeporzio/Downloads/axion_background.dat", action="write", status="replace")
+open(unit=983, file="./axion_background.dat", action="write", status="replace")
 do i=1,ntable
     write(983,*) dexp(Params%loga_table(i)), Params%wax_table(i), Params%cs2_table(i), grhoax_table_internal(i)
 !    write(983,*) dexp(Params%loga_table(i)), Params%wax_table(i), Params%cs2_table(i), &
@@ -997,27 +997,27 @@ do i=1,ntable
 end do
 close(983)
 
-open(unit=46, file="/Users/nicholasdeporzio/Downloads/axion_aosc.dat", action="write", status="replace")
+open(unit=46, file="./axion_aosc.dat", action="write", status="replace")
 write(46,*) Params%a_osc
 close(46)
 
-open(unit=45, file="/Users/nicholasdeporzio/Downloads/axion_ainit.dat", action="write", status="replace")
+open(unit=45, file="./axion_ainit.dat", action="write", status="replace")
 write(45,*) Params%ainit
 close(45)
 
-open(unit=44, file="/Users/nicholasdeporzio/Downloads/axion_aeq.dat", action="write", status="replace")
+open(unit=44, file="./axion_aeq.dat", action="write", status="replace")
 write(44,*) Params%aeq
 close(44)
 
-open(unit=43, file="/Users/nicholasdeporzio/Downloads/axion_badflag.dat", action="write", status="replace")
+open(unit=43, file="./axion_badflag.dat", action="write", status="replace")
 write(43,*) badflag
 close(43)
 
-open(unit=42, file="/Users/nicholasdeporzio/Downloads/axion_ntable.dat", action="write", status="replace")
+open(unit=42, file="./axion_ntable.dat", action="write", status="replace")
 write(42,*) ntable
 close(42)
 
-open(unit=41, file="/Users/nicholasdeporzio/Downloads/axion_grhoax_internal.dat", action="write", status="replace")
+open(unit=41, file="./axion_grhoax_internal.dat", action="write", status="replace")
 do i=1,ntable
    write(41,*) dexp(Params%loga_table(i)), grhoax_table_internal(i) 
 end do
