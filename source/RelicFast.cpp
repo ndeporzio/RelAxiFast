@@ -98,14 +98,14 @@ int main(int argc, char** filenameinput){
     double temp;    
     double axion_osc; 
 
-    FILE *fp3=fopen("axionCAMB_Current/axion_aosc.dat", "r"); 
+    FILE *fp3=fopen("axion_aosc.dat", "r"); 
 
     fscanf(fp3, "%le", &axion_osc); 
     cosmo->axion_osc = &axion_osc;
     printf("Axion a_{osc} = %le \n", axion_osc); 
     printf("Axion a_{osc} = %le \n", cosmo->axion_osc);  
 
-    FILE *fp2=fopen("axionCAMB_Current/axion_background.dat", "r"); 
+    FILE *fp2=fopen("axion_background.dat", "r"); 
 
     for(
         j=0; 
@@ -124,7 +124,7 @@ int main(int argc, char** filenameinput){
         axion_p[j]=axion_w[j]*axion_rho[j];  
     }; 
 
-    FILE *fp4=fopen("axionCAMB_Current/axion_grhoax_internal.dat", "r");
+    FILE *fp4=fopen("axion_grhoax_internal.dat", "r");
 
     for(
         j=0;

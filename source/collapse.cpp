@@ -3574,7 +3574,7 @@ double find_z_collapse_masslessnu_axion(
         Rp2 = Rp1 + zstep_lin/2.0 * (Rpp1 + Rpp2);
     }
     FILE * cs2file;
-    cs2file=fopen("axionCAMB_Current/collapse_cs2_ef.dat", "a+");
+    cs2file=fopen("collapse_cs2_ef.dat", "a+");
     fprintf(cs2file, "%le \t %le \t %le \n", k_long, z, csq_ef_axion_z); 
     //fprintf(cs2file, "NEW CALL OF COLLAPSE FUNCTION \n");
     fclose(cs2file);
