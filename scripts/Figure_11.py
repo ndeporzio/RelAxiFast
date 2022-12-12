@@ -18,9 +18,9 @@ from matplotlib import rc
 
 
 #Path to RelicFast install
-rfpath = os.getenv["RELAXIFAST_DIR"]
-runidx = os.getenv["SLURM_ARRAY_TASK_ID"]
-savepath = os.getenv["STORAGE_DIR"]
+rfpath = os.getenv("RELAXIFAST_DIR")
+runidx = os.getenv("SLURM_ARRAY_TASK_ID")
+savepath = os.getenv("STORAGE_DIR")
 oncluster=True
 
 if (rfpath==None): 
