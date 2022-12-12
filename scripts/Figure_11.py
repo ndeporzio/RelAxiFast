@@ -131,7 +131,7 @@ if (oncluster==True):
     midx = np.mod(runidx, len(m_ax))
     oidx = np.floor_divide(runidx, len(m_ax)) 
     m_ax = np.array([m_ax[midx]])
-    omega_ax = np.array([omega_ax[o_idx]])
+    omega_ax = np.array([omega_ax[oidx]])
 
 
 sum_massive_nu = 0. # Units: eV
