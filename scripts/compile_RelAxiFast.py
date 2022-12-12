@@ -44,7 +44,7 @@ for line in reading_file:
     new_line = line.replace(
         "parallel = -fopenmp", ""
     ).replace(
-        "CC=gcc", "CC=gcc-10"
+        "CC=gcc", "CC=gcc"
     )
     new_file_content += new_line +"\n"
 reading_file.close()
