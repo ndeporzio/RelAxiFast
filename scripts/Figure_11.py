@@ -127,8 +127,8 @@ if (oncluster==True):
     if (runidx==1): 
         np.savetxt(savepath+"m_ax.txt", m_ax)
         np.savetxt(savepath+"omega_ax.txt", omega_ax) 
-    midx = runidx%(len(m_ax))
-    oidx = runidx//(len(m_ax)) 
+    midx = np.mod(runidx, len(m_ax))
+    oidx = np.floor_divide(runidx, len(m_ax)) 
     m_ax = np.array([m_ax[midx]])
     omega_ax = np.array([omega_ax[o_idx]])
 
