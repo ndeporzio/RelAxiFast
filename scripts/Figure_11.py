@@ -101,6 +101,8 @@ krefs = np.logspace(-3.5, -0.5, 4) # Units:
 knorm = np.power(10., -4.) # Units:  
 
 # Initialize results arrays
+b1e_norm = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+b1l_norm = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 b1e = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 b1l = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 b1e_step = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
@@ -269,6 +271,8 @@ for ax_idx, ax_val in enumerate(m_ax):
         lagbias_interp = scipy.interpolate.interp1d(data_lagbias[:,0], data_lagbias[:,1]) 
 
         for kidx, kval in enumerate(krefs): 
+            b1e_norm[kidx, ax_idx, o_idx] = eulbias_interp(knorm) 
+            b1l_norm[kidx, ax_idx, o_idx] = lagbias_interp(knorm)
             b1e[kidx, ax_idx, o_idx] = eulbias_interp(kval) 
             b1l[kidx, ax_idx, o_idx] = lagbias_interp(kval)
             b1e_step[kidx, ax_idx, o_idx] = eulbias_interp(kval)/eulbias_interp(knorm) 
@@ -289,6 +293,8 @@ if (oncluster==True):
         if data_save_level>0:
             print("Saving cluster run data to...")
             print(rfpath) 
+            np.savetxt(rfpath+"Figure_11_b1enorm_logk"+f"{np.log10(kval):.3f}.txt", b1e_norm[kidx])
+            np.savetxt(rfpath+"Figure_11_b1lnorm_logk"+f"{np.log10(kval):.3f}.txt", b1l_norm[kidx])
             np.savetxt(rfpath+"Figure_11_b1e_logk"+f"{np.log10(kval):.3f}.txt", b1e[kidx])
             np.savetxt(rfpath+"Figure_11_b1l_logk"+f"{np.log10(kval):.3f}.txt", b1l[kidx])
             np.savetxt(rfpath+"Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}.txt", b1e_step[kidx])
@@ -300,6 +306,8 @@ else:
     
     for kidx, kval in enumerate(krefs):
         if data_save_level>0:  
+            np.savetxt(rfpath+"plots/Figure_11_b1enorm_logk"+f"{np.log10(kval):.3f}.txt", b1e_norm[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1lnorm_logk"+f"{np.log10(kval):.3f}.txt", b1l_norm[kidx])
             np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}.txt", b1e[kidx])
             np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}.txt", b1l[kidx])
             np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}.txt", b1e_step[kidx])
