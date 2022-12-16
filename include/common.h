@@ -41,7 +41,7 @@
     //Recommended 5, above 10 barely any
     //difference.
     
-    #define boost_initial_conditions 1.0    //To make initial conditions of
+    #define boost_initial_conditions 100.0    //To make initial conditions of
     //\delta_short bigger by that
     //amount. Code will complain if it
     //cannot find \delta_short.
@@ -264,7 +264,7 @@
     
     // Other code parameters:
     
-    #define zi 200.0    //initial redshift for collapse. Same than LoVerde2014,
+    #define zi 900.0    //initial redshift for collapse. Same than LoVerde2014,
     //we ignore non-linear evolution until then other than
     //through CAMB.
     
