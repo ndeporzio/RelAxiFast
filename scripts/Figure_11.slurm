@@ -2,8 +2,8 @@
 #SBATCH -J P005_FIG11 # A single job name for the array
 #SBATCH -n 1 # Number of cores
 #SBATCH -N 1 # All cores on one Node
-#SBATCH -p test # Partition
-#SBATCH --mem 4000 # Memory request (4Gb)
+#SBATCH -p shared # Partition
+#SBATCH --mem 2000 # Memory request (4Gb)
 #SBATCH -t 0-1:00 # Maximum execution time (D-HH:MM)
 #SBATCH -o "/n/home02/ndeporzio/projects/P005_FuzzyCdmBias/results/FIG11_%a.out" # Standard output
 #SBATCH -e "/n/home02/ndeporzio/projects/P005_FuzzyCdmBias/results/FIG11_%a.err" # Standard error
@@ -54,4 +54,6 @@ mkdir -p "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"
 python $RELAXIFAST_DIR/scripts/Figure_11.py >> "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}/FIG11_${SLURM_ARRAY_TASK_ID}.scriptout" 
 cp $RELAXIFAST_DIR/output/result-0/* $STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID
 mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.out" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"
-mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.err" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"   
+mv "$STORAGE_DIR/FIG11_${SLURM_ARRAY_TASK_ID}.err" "$STORAGE_DIR/FIG11_$SLURM_ARRAY_TASK_ID"  
+
+ 

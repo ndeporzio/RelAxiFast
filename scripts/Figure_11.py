@@ -63,7 +63,7 @@ data_save_level=2
 omega_cdm_LCDM = 0.1127 # Units: none
 omega_b_LCDM = 0.02226 # Units: none
 h_LCDM = 0.70148 # Units: none 
-m_ax = np.logspace(-32., -22., 41) # Units: eV
+m_ax = np.logspace(-32., -22., 6) # Units: eV
 #m_ax = np.array([
 #    np.power(10., -32.00),
 #    np.power(10., -31.75),
@@ -119,7 +119,7 @@ m_ax = np.logspace(-32., -22., 41) # Units: eV
 #omega_ax = np.array([0.090, 0.095])*omega_cdm_LCDM 
 omega_ax = np.concatenate(( # Units: none
     np.array([1.0e-9*omega_cdm_LCDM]), 
-    np.linspace(0.010, 0.100, 10)*omega_cdm_LCDM 
+    np.linspace(0.010, 0.100, 4)*omega_cdm_LCDM 
 ))
 print("Axion masses: ", m_ax)
 print("Axion abundances (% CDM): ", omega_ax/omega_cdm_LCDM)
@@ -148,7 +148,7 @@ f_b_LCDM = omega_b_LCDM/(omega_cdm_LCDM + omega_b_LCDM)
 krefs = np.logspace(-3.5, -0.5, 4) # Units: 
 
 # Scale to normalize step plots to 
-knorm = np.power(10., -3.9) # Units:  
+knorm = np.power(10., -4.) # Units:  
 
 # Initialize results arrays
 b1e = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
@@ -333,17 +333,24 @@ for ax_idx, ax_val in enumerate(m_ax):
 np.savetxt(rfpath+"plots/Figure_11_Failures_zi400.txt", np.array(spontaneous_failures, dtype='int'))
 print("Spontaneous failures: ", np.array(spontaneous_failures, dtype='int'))
 
-if (oncluster==False): 
+if (oncluster==True):
+    for kidx, kval in enumerate(krefs):
+        if data_save_level>0:
+            np.savetxt(rfpath+"Figure_11_b1e_logk"+f"{np.log10(kval):.3f}.txt", b1e[kidx])
+            np.savetxt(rfpath+"Figure_11_b1l_logk"+f"{np.log10(kval):.3f}.txt", b1l[kidx])
+            np.savetxt(rfpath+"Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}.txt", b1e_step[kidx])
+            np.savetxt(rfpath+"Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}.txt", b1l_step[kidx])
+else: 
     def fmt(x):
         s = f"{(x-1.)*100.:.0f}"
         return rf"${s} \%$" if plt.rcParams["text.usetex"] else f"{s} %"
     
     for kidx, kval in enumerate(krefs):
         if data_save_level>0:  
-            np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e[kidx])
-            np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l[kidx])
-            np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1e_step[kidx])
-            np.savetxt(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}"+"_zi400.txt", b1l_step[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1e_logk"+f"{np.log10(kval):.3f}.txt", b1e[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1l_logk"+f"{np.log10(kval):.3f}.txt", b1l[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}.txt", b1e_step[kidx])
+            np.savetxt(rfpath+"plots/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}.txt", b1l_step[kidx])
     
         Z = np.transpose(np.nan_to_num(b1l[kidx]))
         X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
