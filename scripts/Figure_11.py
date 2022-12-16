@@ -333,9 +333,12 @@ for ax_idx, ax_val in enumerate(m_ax):
 np.savetxt(rfpath+"plots/Figure_11_Failures_zi400.txt", np.array(spontaneous_failures, dtype='int'))
 print("Spontaneous failures: ", np.array(spontaneous_failures, dtype='int'))
 
+print("On Cluster? ", oncluster) 
 if (oncluster==True):
     for kidx, kval in enumerate(krefs):
         if data_save_level>0:
+            print("Saving cluster run data to...")
+            print(rfpath) 
             np.savetxt(rfpath+"Figure_11_b1e_logk"+f"{np.log10(kval):.3f}.txt", b1e[kidx])
             np.savetxt(rfpath+"Figure_11_b1l_logk"+f"{np.log10(kval):.3f}.txt", b1l[kidx])
             np.savetxt(rfpath+"Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}.txt", b1e_step[kidx])
