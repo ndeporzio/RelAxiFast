@@ -25,7 +25,7 @@ if (rfpath==None):
     rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelicFast.nosync/"
     oncluster=False
 else: 
-    runidx = int(os.getenv("SLURM_ARRAY_TASK_ID"))
+    runidx = (int(os.getenv("SLURM_ARRAY_TASK_ID"))-1)
     oncluster=True
 
 #sns.set()
@@ -125,7 +125,7 @@ print("Axion masses: ", m_ax)
 print("Axion abundances (% CDM): ", omega_ax/omega_cdm_LCDM)
 
 if (oncluster==True):
-    if (runidx==1): 
+    if (runidx==0): 
         np.savetxt(savepath+"m_ax.txt", m_ax)
         np.savetxt(savepath+"omega_ax.txt", omega_ax) 
     midx = np.mod(runidx, len(m_ax))
