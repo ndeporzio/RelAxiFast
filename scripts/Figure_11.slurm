@@ -19,17 +19,19 @@ RELAXIFAST_DIR="${SCRATCH}/dvorkin_lab/ndeporzio/RelAxiFast_${SLURM_ARRAY_TASK_I
 mkdir -p $STORAGE_DIR
 
 if [ -d "$RELAXIFAST_DIR" ]; then
-  echo "RelAxiFast already installed..."
-else
-  echo "Installing RelAxiFast..."
-  cd "${SCRATCH}/dvorkin_lab/ndeporzio"
-  git clone git@github.com:ndeporzio/RelAxiFast.git $RELAXIFAST_DIR
-  cd $RELAXIFAST_DIR
-  git checkout cluster
-  module load gcc/10.2.0-fasrc01
-  python scripts/compile_RelAxiFast.py
-  echo $RELAXIFAST_DIR
+  echo "RelAxiFast already installed. Deleting..."
+  rm -rf $RELAXIFAST_DIR
 fi
+
+echo "Installing RelAxiFast..."
+cd "${SCRATCH}/dvorkin_lab/ndeporzio"
+git clone git@github.com:ndeporzio/RelAxiFast.git $RELAXIFAST_DIR
+cd $RELAXIFAST_DIR
+git checkout cluster
+module load gcc/10.2.0-fasrc01
+python scripts/compile_RelAxiFast.py
+echo $RELAXIFAST_DIR
+
 
 echo "PROJECT_DIR: $PROJECT_DIR"                                                
 echo "STORAGE_DIR: $STORAGE_DIR"                                                
