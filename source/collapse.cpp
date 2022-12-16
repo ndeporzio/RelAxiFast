@@ -726,8 +726,8 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     Omnu1_i=cosmo->Omeganu1*rho_nu1_ratio_zi;
     Omnu2_i=cosmo->Omeganu2*rho_nu2_ratio_zi;
     Omextra_i=cosmo->Omega_extra*rho_extra_ratio_zi;
-    //if(boltzmann_tag == _AXIONCAMB_){
-    //    Omaxion_i=cosmo->Omega_ax*rho_axion_ratio_zi; 
+    if(boltzmann_tag == _AXIONCAMB_){
+        Omaxion_i=cosmo->Omega_ax*rho_axion_ratio_zi;}; 
     const double Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
                 Omnu1_i + Omnu2_i + Omextra_i + Omaxion_i);//H(zi) in Mpc-1
     //}
@@ -737,9 +737,11 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     //}
 
     if(debug_mode>0){
-        printf("Hi=%.2le \n",Hi);
-        printf("OmM_i=%.2le, OmR_i=%.2le, Omnu1=%.2le \n",OmM_i,OmR_i,Omnu1_i);
-        printf("Omnu2_i=%.2le, Omextra=%.2le \n",Omnu2_i,Omextra_i);
+        printf("Hi=%.6le \n",Hi);
+        printf("OmM_i=%.6le, OmR_i=%.6le, Omnu1=%.6le \n",OmM_i,OmR_i,Omnu1_i);
+        printf("Omnu2_i=%.6le, Omextra=%.6le \n",Omnu2_i,Omextra_i);
+        printf("Omax=%.6le, OmL_i=%.6le \n", Omaxion_i, OmL_i);
+        printf("H0=%.6le \n", cosmo->H0_Mpc); 
     }
 
     const double sigma8_0 = getsigma_8(cosmo, k_transfer_array, transfer_matter[0]);
