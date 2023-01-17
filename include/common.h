@@ -264,7 +264,7 @@
     
     // Other code parameters:
     
-    #define zi 200.0    //initial redshift for collapse. Same than LoVerde2014,
+    #define zi 20000.0    //initial redshift for collapse. Same than LoVerde2014 (1405.4858, 1405.4855),
     //we ignore non-linear evolution until then other than
     //through CAMB.
     
