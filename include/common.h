@@ -41,7 +41,7 @@
     //Recommended 5, above 10 barely any
     //difference.
     
-    #define boost_initial_conditions 1.0    //To make initial conditions of
+    #define boost_initial_conditions 200.0    //To make initial conditions of
     //\delta_short bigger by that
     //amount. Code will complain if it
     //cannot find \delta_short.

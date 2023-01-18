@@ -114,3 +114,4 @@ for kidx, kval in enumerate(krefs):
     plt.savefig("./Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}.png")
     if (kidx==(len(krefs)-1)):
         plt.savefig("Figure_11.png")
+        np.savetxt("Figure_11_zdata.txt", Z) 
