@@ -626,12 +626,12 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
             //printf("z=%.1le,  w=%.1le, Tnu/mnu=%.1le \n",zlist_EoS[i],plist_EoS[i]/rholist_EoS[i],Temp_nu*KtoeV/(mnu1));
 
             if(debug_mode > 0){
-                fprintf(
-                    fp, 
-                    "%le %le %le \n",
+                printf(
+                    "z: %le \t om_ax/om_ax(z=0): %le \t w_ax1: %le \t w_ax2: %le \n",
                     zlist_EoS[i], 
                     rholist_axion_EoS[i]/rholist_axion_EoS[0], 
-                    plist_axion_EoS[i]/rholist_axion_EoS[i]
+                    plist_axion_EoS[i]/rholist_axion_EoS[i], 
+                    plist_axion_EoS[i]/(rholist_axion_EoS[i])
                 );
             }
         }
@@ -640,6 +640,32 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
         rho_axion_zi=interpol(cosmo->axion_rho, cosmo->axion_z, *cosmo->axion_N, zi);
         rho_axion_z0=interpol(cosmo->axion_rho, cosmo->axion_z, *cosmo->axion_N, zf);
         rho_axion_ratio_zi=rho_axion_zi/rho_axion_z0;
+        printf("rho_axion_zi=%.6le \n", rho_axion_zi);
+        printf("rho_axion_z0=%.6le \n", rho_axion_z0);
+
+        lengthname=sprintf(
+            filename,
+            "output/result-%d/RelAxiFast_axion_rho.dat",
+            cosmo->file_tag
+        );
+        fp=fopen(filename,"w");
+        if(print_headers!=0){
+            fprintf(
+                fp,
+                "a   z   omega_axion \n"
+            );
+        }
+        for(int idx=0; idx<(2*(*cosmo->axion_N)); idx++){
+            fprintf(
+                fp,
+                "%le   %le   %le \n",
+                cosmo->axion_a[idx],
+                cosmo->axion_z[idx],
+                cosmo->axion_rho[idx]
+            );
+        }
+        fclose(fp);
+
     }
 
 
@@ -720,6 +746,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
 
 
     double OmL_i, OmM_i, OmR_i, Omnu1_i, Omnu2_i, Omextra_i, Omaxion_i;
+    double Hi; 
     OmL_i=cosmo->OmegaL;
     OmM_i=cosmo->OmegaM*pow(1.+zi,3.);
     OmR_i=cosmo->OmegaR*pow(1.+zi,4.);
@@ -727,17 +754,17 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     Omnu2_i=cosmo->Omeganu2*rho_nu2_ratio_zi;
     Omextra_i=cosmo->Omega_extra*rho_extra_ratio_zi;
     if(boltzmann_tag == _AXIONCAMB_){
-        Omaxion_i=cosmo->Omega_ax*rho_axion_ratio_zi;}; 
-    const double Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
+        Omaxion_i=cosmo->Omega_ax*rho_axion_ratio_zi;
+        Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
                 Omnu1_i + Omnu2_i + Omextra_i + Omaxion_i);//H(zi) in Mpc-1
-    //}
-    //else{
-    //    Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
-    //            Omnu1_i + Omnu2_i + Omextra_i);//H(zi) in Mpc-1
-    //}
+    }
+    else{
+        Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
+                Omnu1_i + Omnu2_i + Omextra_i);//H(zi) in Mpc-1
+    }
 
     if(debug_mode>0){
-        printf("Hi=%.6le \n",Hi);
+        printf("Hi=%.6le \n", Hi);
         printf("OmM_i=%.6le, OmR_i=%.6le, Omnu1=%.6le \n",OmM_i,OmR_i,Omnu1_i);
         printf("Omnu2_i=%.6le, Omextra=%.6le \n",Omnu2_i,Omextra_i);
         printf("Omax=%.6le, OmL_i=%.6le \n", Omaxion_i, OmL_i);
@@ -1130,7 +1157,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
                             delta_short
                         );
 
-                    //printf("i=%d, T_cdm_i=%.2le, T_g=%.2le, T_nu=%.2le \n",i_klong, Ti_klong[i_klong], transfer_gamma_klong[i_klong][33], transfer_nu_massless_klong[i_klong][33]);
+                    printf("i=%d, T_cdm_i=%.2le, T_g=%.2le, T_nu=%.2le \n",i_klong, Ti_klong[i_klong], transfer_gamma_klong[i_klong][33], transfer_nu_massless_klong[i_klong][33]);
                     }
 
 
@@ -3367,7 +3394,6 @@ double find_z_collapse_masslessnu_axion(
     const double T_matter=Tfm_klong;
 
     double rhoaxion_0=rholistaxion_EoS[0];//axion at z=0.  
-
     //we set the initial H. All these are average densities.
     double OmGbar= cosmo->OmegaG * pow(1.+zi,4.); //photon
     double Omnu_masslessbar= cosmo->Omeganu_massless * pow(1.+zi,4.); 

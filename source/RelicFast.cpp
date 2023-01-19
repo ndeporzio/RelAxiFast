@@ -103,7 +103,7 @@ int main(int argc, char** filenameinput){
     fscanf(fp3, "%le", &axion_osc); 
     cosmo->axion_osc = &axion_osc;
     printf("Axion a_{osc} = %le \n", axion_osc); 
-    printf("Axion a_{osc} = %le \n", cosmo->axion_osc);  
+    printf("Axion a_{osc} = %le \n", *cosmo->axion_osc);  
 
     FILE *fp2=fopen("axion_background.dat", "r"); 
 
