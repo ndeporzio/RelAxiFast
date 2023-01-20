@@ -1958,6 +1958,28 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
         ////////////////////////////////////////////
         ////and we save the results to files.    /////
         //////////////////////////////////////////
+        
+        lengthname=sprintf(
+            filename,
+            "output/result-%d/sigmaM_z%.2f_M%.2f_Nk%d.dat",
+            cosmo->file_tag,
+            cosmo->z_collapse, 
+            log10(cosmo->Mhalo),
+            cosmo->N_klong
+        ); //we save the delta_crit extrapolated to z=0.5
+        fp=fopen(filename,"w");
+        fprintf(fp, "sigmaM_i   sigmaM_collapse   sigmaM_zip1   sigmaM_zip2   d_sigmaM_i \n");
+        fprintf(
+            fp,
+            "%le   %le   %le   %le   %le \n", 
+            sigmaM_i,
+            sigmaM_collapse, 
+            sigmaM_zip1, 
+            sigmaM_zip2,
+            d_sigmaM_i
+        );
+        fclose(fp);
+
         lengthname=sprintf(
             filename,
             "output/result-%d/delta_initial_z%.2f_M%.2f_Nk%d.dat",
