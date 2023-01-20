@@ -3504,7 +3504,7 @@ double find_z_collapse_masslessnu_axion(
         //double Oaxion =( 
         //    (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
         //); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
-        Oaxion =(
+        double Oaxion =(
             (1.0+delta_axion_z)*Omaxionbar_z
         ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
 
