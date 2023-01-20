@@ -756,7 +756,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     if(boltzmann_tag == _AXIONCAMB_){
         Omaxion_i=cosmo->Omega_ax*rho_axion_ratio_zi;
         Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
-                Omnu1_i + Omnu2_i + Omextra_i + Omaxion_i);//H(zi) in Mpc-1
+                Omnu1_i + Omnu2_i + Omextra_i );//+ Omaxion_i);//H(zi) in Mpc-1
     }
     else{
         Hi=cosmo->H0_Mpc*sqrt(OmL_i + OmM_i + OmR_i +
