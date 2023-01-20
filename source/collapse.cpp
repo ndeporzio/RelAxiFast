@@ -3500,13 +3500,12 @@ double find_z_collapse_masslessnu_axion(
 
         //these are the terms that go inside the sum, define them outside for 
         //clarity.
-        //double Oaxion = cosmo->Omega_ax * pow(1.+z, 3); 
-        //double Oaxion =( 
-        //    (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
-        //); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
-        double Oaxion =(
-            (1.0+delta_axion_z)*Omaxionbar_z
+        double Oaxion =( 
+            (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
         ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
+        //double Oaxion =(
+        //    (1.0+delta_axion_z)*Omaxionbar_z
+        //); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
 
         //we find R''(z). Only depends on z and other variables calculated at 
         //the previous z.
@@ -3568,12 +3567,12 @@ double find_z_collapse_masslessnu_axion(
 
 
         //we update the terms that go inside the integral.
-        //Oaxion =( 
-        //    (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
-        //); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
         Oaxion =( 
-            (1.0+delta_axion_z)*Omaxionbar_z
+            (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
         ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
+        //Oaxion =( 
+        //    (1.0+delta_axion_z)*Omaxionbar_z
+        //); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
 
         H2  = cosmo->H0_Mpc * sqrt(OmL + OmM + OmRbar + Omaxionbar_z);// H(z_next)
 
