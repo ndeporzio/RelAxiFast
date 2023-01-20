@@ -3565,8 +3565,11 @@ double find_z_collapse_masslessnu_axion(
 
 
         //we update the terms that go inside the integral.
+        //Oaxion =( 
+        //    (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
+        //); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
         Oaxion =( 
-            (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
+            (1.0+delta_axion_z)*Omaxionbar_z
         ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
 
         H2  = cosmo->H0_Mpc * sqrt(OmL + OmM + OmRbar + Omaxionbar_z);// H(z_next)
