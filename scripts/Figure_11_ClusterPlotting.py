@@ -55,10 +55,14 @@ b1e = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 b1l = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 b1e_step = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 b1l_step = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
-deltacrit = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
-deltainit = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
-deltacritstep = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
-deltainitstep = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltacritlow = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltainitlow = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltacritsteplow = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltainitsteplow = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltacrithigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltainithigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltacritstephigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+deltainitstephigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 
 def fmt(x):
     s = f"{(x-1.)*100.:.0f}"
@@ -74,14 +78,24 @@ for kidx, kval in enumerate(krefs):
         b1e_step[kidx, m_idx, o_idx] = np.float(np.loadtxt("./FIG11_"+str(idx+1)+"/Figure_11_b1estep_logk"+f"{np.log10(kval):.3f}.txt")) 
         b1l_step[kidx, m_idx, o_idx] = np.float(np.loadtxt("./FIG11_"+str(idx+1)+"/Figure_11_b1lstep_logk"+f"{np.log10(kval):.3f}.txt")) 
 
-        deltacritdata = np.loadtxt("./FIG11_"+str(idx+1)+"/delta_crit_z0.65_M13.00_Nk50.dat", skiprows=1)[0:50,[1,2]]
-        deltainitdata = np.loadtxt("./FIG11_"+str(idx+1)+"/delta_initial_z0.65_M13.00_Nk50.dat", skiprows=1)[0:50,[1,2]]
-        deltacritinterp = scipy.interpolate.interp1d(deltacritdata[:,0], deltacritdata[:,1])
-        deltainitinterp = scipy.interpolate.interp1d(deltainitdata[:,0], deltainitdata[:,1])
-        deltacrit[kidx, m_idx, o_idx] = deltacritinterp(kval)
-        deltainit[kidx, m_idx, o_idx] = deltainitinterp(kval) 
-        deltacritstep[kidx, m_idx, o_idx] = deltacritinterp(kval)/deltacritinterp(1.0e-4)
-        deltainitstep[kidx, m_idx, o_idx] = deltainitinterp(kval)/deltacritinterp(1.0e-4)
+        deltacritdatalow = np.loadtxt("./FIG11_"+str(idx+1)+"/delta_crit_z0.65_M13.00_Nk50.dat", skiprows=1)[0:50,[1,2]]
+        deltainitdatalow = np.loadtxt("./FIG11_"+str(idx+1)+"/delta_initial_z0.65_M13.00_Nk50.dat", skiprows=1)[0:50,[1,2]]
+        deltacritinterplow = scipy.interpolate.interp1d(deltacritdatalow[:,0], deltacritdatalow[:,1])
+        deltainitinterplow = scipy.interpolate.interp1d(deltainitdatalow[:,0], deltainitdatalow[:,1])
+        deltacritlow[kidx, m_idx, o_idx] = deltacritinterplow(kval)
+        deltainitlow[kidx, m_idx, o_idx] = deltainitinterplow(kval) 
+        deltacritsteplow[kidx, m_idx, o_idx] = deltacritinterplow(kval)/deltacritinterplow(1.0e-4)
+        deltainitsteplow[kidx, m_idx, o_idx] = deltainitinterplow(kval)/deltacritinterplow(1.0e-4)
+
+        deltacritdatahigh = np.loadtxt("./FIG11_"+str(idx+1)+"/delta_crit_z0.65_M13.00_Nk50.dat", skiprows=1)[50:100,[1,2]]
+        deltainitdatahigh = np.loadtxt("./FIG11_"+str(idx+1)+"/delta_initial_z0.65_M13.00_Nk50.dat", skiprows=1)[50:100,[1,2]]
+        deltacritinterphigh = scipy.interpolate.interp1d(deltacritdatahigh[:,0], deltacritdatahigh[:,1])
+        deltainitinterphigh = scipy.interpolate.interp1d(deltainitdatahigh[:,0], deltainitdatahigh[:,1])
+        deltacrithigh[kidx, m_idx, o_idx] = deltacritinterphigh(kval)
+        deltainithigh[kidx, m_idx, o_idx] = deltainitinterphigh(kval) 
+        deltacritstephigh[kidx, m_idx, o_idx] = deltacritinterphigh(kval)/deltacritinterphigh(1.0e-4)
+        deltainitstephigh[kidx, m_idx, o_idx] = deltainitinterphigh(kval)/deltacritinterphigh(1.0e-4)
+
 
     Z = np.transpose(np.nan_to_num(b1l[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
@@ -124,7 +138,7 @@ for kidx, kval in enumerate(krefs):
         plt.savefig("Figure_11.png")
         np.savetxt("Figure_11_bLstep.txt", Z)
 
-    Z = np.transpose(np.nan_to_num(deltacrit[kidx]))
+    Z = np.transpose(np.nan_to_num(deltacritlow[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
     #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
     #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
@@ -132,7 +146,7 @@ for kidx, kval in enumerate(krefs):
     #Z = interp(xn,yn)
     #X, Y = np.meshgrid(xn, yn) 
     fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltacrit), vmax=np.max(deltacrit), shading="auto", cmap='magma')
+    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltacritlow), vmax=np.max(deltacritlow), shading="auto", cmap='magma')
     if (np.max(Z)>1.01):
         CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
         ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
@@ -146,9 +160,9 @@ for kidx, kval in enumerate(krefs):
     )
     plt.savefig("./Figure_11_deltacrit_logk"+f"{np.log10(kval):.3f}.png")
     if (kidx==(len(krefs)-1)):
-        np.savetxt("Figure_11_deltacrit.txt", Z)
+        np.savetxt("Figure_11_deltacritlow.txt", Z)
 
-    Z = np.transpose(np.nan_to_num(deltainit[kidx]))
+    Z = np.transpose(np.nan_to_num(deltainitlow[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
     #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
     #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
@@ -156,7 +170,7 @@ for kidx, kval in enumerate(krefs):
     #Z = interp(xn,yn)
     #X, Y = np.meshgrid(xn, yn) 
     fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltainit), vmax=np.max(deltainit), shading="auto", cmap='magma')
+    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltainitlow), vmax=np.max(deltainitlow), shading="auto", cmap='magma')
     if (np.max(Z)>1.01):
         CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
         ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
@@ -168,16 +182,11 @@ for kidx, kval in enumerate(krefs):
     cbar.set_label(label=(
         r"$\delta_{crit}(k)~/~\delta_{crit}(k_{\rm ref})$")#, size=50
     )
-    plt.savefig("./Figure_11_deltainit_logk"+f"{np.log10(kval):.3f}.png")
+    plt.savefig("./Figure_11_deltainitlow_logk"+f"{np.log10(kval):.3f}.png")
     if (kidx==(len(krefs)-1)):
-        np.savetxt("Figure_11_deltainit.txt", Z)  
+        np.savetxt("Figure_11_deltainitlow.txt", Z)  
 
-
-
-
-
-
-    Z = np.transpose(np.nan_to_num(deltacritstep[kidx]))
+    Z = np.transpose(np.nan_to_num(deltacrithigh[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
     #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
     #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
@@ -185,7 +194,7 @@ for kidx, kval in enumerate(krefs):
     #Z = interp(xn,yn)
     #X, Y = np.meshgrid(xn, yn) 
     fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltacritstep), vmax=np.max(deltacritstep), shading="auto", cmap='magma')
+    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltacrithigh), vmax=np.max(deltacrithigh), shading="auto", cmap='magma')
     if (np.max(Z)>1.01):
         CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
         ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
@@ -197,11 +206,11 @@ for kidx, kval in enumerate(krefs):
     cbar.set_label(label=(
         r"$\delta_{crit}(k)~/~\delta_{crit}(k_{\rm ref})$")#, size=50
     )
-    plt.savefig("./Figure_11_deltacritstep_logk"+f"{np.log10(kval):.3f}.png")
+    plt.savefig("./Figure_11_deltacrithigh_logk"+f"{np.log10(kval):.3f}.png")
     if (kidx==(len(krefs)-1)):
-        np.savetxt("Figure_11_deltacritstep.txt", Z)
+        np.savetxt("Figure_11_deltacrithigh.txt", Z)
 
-    Z = np.transpose(np.nan_to_num(deltainitstep[kidx]))
+    Z = np.transpose(np.nan_to_num(deltainithigh[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
     #interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
     #xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
@@ -209,7 +218,7 @@ for kidx, kval in enumerate(krefs):
     #Z = interp(xn,yn)
     #X, Y = np.meshgrid(xn, yn) 
     fig, ax = plt.subplots(1,1)
-    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltainitstep), vmax=np.max(deltainitstep), shading="auto", cmap='magma')
+    hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltainithigh), vmax=np.max(deltainithigh), shading="auto", cmap='magma')
     if (np.max(Z)>1.01):
         CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
         ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
@@ -221,6 +230,55 @@ for kidx, kval in enumerate(krefs):
     cbar.set_label(label=(
         r"$\delta_{crit}(k)~/~\delta_{crit}(k_{\rm ref})$")#, size=50
     )
-    plt.savefig("./Figure_11_deltainitstep_logk"+f"{np.log10(kval):.3f}.png")
+    plt.savefig("./Figure_11_deltainithigh_logk"+f"{np.log10(kval):.3f}.png")
     if (kidx==(len(krefs)-1)):
-        np.savetxt("Figure_11_deltainitstep.txt", Z)  
+        np.savetxt("Figure_11_deltainithigh.txt", Z)  
+
+
+    #Z = np.transpose(np.nan_to_num(deltacritstep[kidx]))
+    #X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+    ##interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
+    ##xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
+    ##yn = np.arange(np.min(omega_ax/omega_cdm_LCDM), np.max(omega_ax/omega_cdm_LCDM), .001)
+    ##Z = interp(xn,yn)
+    ##X, Y = np.meshgrid(xn, yn) 
+    #fig, ax = plt.subplots(1,1)
+    #hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltacritstep), vmax=np.max(deltacritstep), shading="auto", cmap='magma')
+    #if (np.max(Z)>1.01):
+    #    CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
+    #    ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
+    #ax.tick_params(axis='both')
+    #ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+    #ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+    #ax.set_ylim((0.,0.1))
+    #cbar = plt.colorbar(hmap)
+    #cbar.set_label(label=(
+    #    r"$\delta_{crit}(k)~/~\delta_{crit}(k_{\rm ref})$")#, size=50
+    #)
+    #plt.savefig("./Figure_11_deltacritstep_logk"+f"{np.log10(kval):.3f}.png")
+    #if (kidx==(len(krefs)-1)):
+    #    np.savetxt("Figure_11_deltacritstep.txt", Z)
+
+    #Z = np.transpose(np.nan_to_num(deltainitstep[kidx]))
+    #X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+    ##interp = scipy.interpolate.interp2d(X, Y, Z, kind='linear') 
+    ##xn = np.arange(np.min(np.log10(m_ax)), np.max(np.log10(m_ax)), 0.01)
+    ##yn = np.arange(np.min(omega_ax/omega_cdm_LCDM), np.max(omega_ax/omega_cdm_LCDM), .001)
+    ##Z = interp(xn,yn)
+    ##X, Y = np.meshgrid(xn, yn) 
+    #fig, ax = plt.subplots(1,1)
+    #hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(deltainitstep), vmax=np.max(deltainitstep), shading="auto", cmap='magma')
+    #if (np.max(Z)>1.01):
+    #    CS = ax.contour(X, Y, Z, np.linspace(1.01, 1.05, 5), colors='white')
+    #    ax.clabel(CS, CS.levels, inline=False, fmt=fmt)
+    #ax.tick_params(axis='both')
+    #ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+    #ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+    #ax.set_ylim((0.,0.1))
+    #cbar = plt.colorbar(hmap)
+    #cbar.set_label(label=(
+    #    r"$\delta_{crit}(k)~/~\delta_{crit}(k_{\rm ref})$")#, size=50
+    #)
+    #plt.savefig("./Figure_11_deltainitstep_logk"+f"{np.log10(kval):.3f}.png")
+    #if (kidx==(len(krefs)-1)):
+    #    np.savetxt("Figure_11_deltainitstep.txt", Z)  
