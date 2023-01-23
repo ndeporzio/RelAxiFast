@@ -63,6 +63,9 @@ deltacrithigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 deltainithigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 deltacritstephigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
 deltainitstephigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: none
+sigmaMinit = np.zeros((len(m_ax), len(omega_ax))) # Units: none
+sigmaMcoll = np.zeros((len(m_ax), len(omega_ax))) # Units: none
+dsigmaMinit =np.zeros((len(m_ax), len(omega_ax))) # Units: none
 
 def fmt(x):
     s = f"{(x-1.)*100.:.0f}"
@@ -96,6 +99,11 @@ for kidx, kval in enumerate(krefs):
         deltacritstephigh[kidx, m_idx, o_idx] = deltacritinterphigh(kval)/deltacritinterphigh(1.0e-4)
         deltainitstephigh[kidx, m_idx, o_idx] = deltainitinterphigh(kval)/deltacritinterphigh(1.0e-4)
 
+        if kidx==0: 
+            sigmaM = np.loadtxt("./FIG11_"+str(idx+1)+"/sigmaM_z0.65_M13.00_Nk1.dat", skiprows=1); 
+            sigmaMinit[m_idx, o_idx] = sigmaM[0]         
+            sigmaMcoll[m_idx, o_idx] = sigmaM[1]
+            dsigmaMinit[m_idx, o_idx] = sigmaM[4]
 
     Z = np.transpose(np.nan_to_num(b1l[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
@@ -282,3 +290,50 @@ for kidx, kval in enumerate(krefs):
     #plt.savefig("./Figure_11_deltainitstep_logk"+f"{np.log10(kval):.3f}.png")
     #if (kidx==(len(krefs)-1)):
     #    np.savetxt("Figure_11_deltainitstep.txt", Z)  
+
+
+Z = np.transpose(np.nan_to_num(sigmaMinit))
+X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+fig, ax = plt.subplots(1,1)
+hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(Z), vmax=np.max(Z), shading="auto", cmap='magma')
+ax.tick_params(axis='both')
+ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+ax.set_ylim((0.,0.1))
+cbar = plt.colorbar(hmap)
+cbar.set_label(label=(
+    r"$\sigma_M(z_{ini})$")#, size=50
+)
+plt.savefig("./sigmaMinit.png")
+np.savetxt("sigmaMinit.txt", Z)
+
+Z = np.transpose(np.nan_to_num(sigmaMcoll))
+X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+fig, ax = plt.subplots(1,1)
+hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(Z), vmax=np.max(Z), shading="auto", cmap='magma')
+ax.tick_params(axis='both')
+ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+ax.set_ylim((0.,0.1))
+cbar = plt.colorbar(hmap)
+cbar.set_label(label=(
+    r"$\sigma_M(z_{ini})$")#, size=50
+)
+plt.savefig("./sigmaMcoll.png")
+np.savetxt("sigmaMcoll.txt", Z)
+
+Z = np.transpose(np.nan_to_num(dsigmaMinit))
+X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+fig, ax = plt.subplots(1,1)
+hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(Z), vmax=np.max(Z), shading="auto", cmap='magma')
+ax.tick_params(axis='both')
+ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+ax.set_ylim((0.,0.1))
+cbar = plt.colorbar(hmap)
+cbar.set_label(label=(
+    r"$\sigma_M(z_{ini})$")#, size=50
+)
+plt.savefig("./dsigmaMinit.png")
+np.savetxt("dsigmaMinit.txt", Z)
+
