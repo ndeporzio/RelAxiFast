@@ -66,6 +66,7 @@ deltainitstephigh = np.zeros((len(krefs), len(m_ax), len(omega_ax))) # Units: no
 sigmaMinit = np.zeros((len(m_ax), len(omega_ax))) # Units: none
 sigmaMcoll = np.zeros((len(m_ax), len(omega_ax))) # Units: none
 dsigmaMinit =np.zeros((len(m_ax), len(omega_ax))) # Units: none
+b1Lderivative =np.zeros((len(m_ax), len(omega_ax))) # Units: none
 
 def fmt(x):
     s = f"{(x-1.)*100.:.0f}"
@@ -104,6 +105,7 @@ for kidx, kval in enumerate(krefs):
             sigmaMinit[m_idx, o_idx] = sigmaM[0]         
             sigmaMcoll[m_idx, o_idx] = sigmaM[1]
             dsigmaMinit[m_idx, o_idx] = sigmaM[4]
+            b1Lderivative[m_idx, o_idx] = np.float(np.loadtxt("./FIG11_"+str(idx+1)+"/b1Lderivative_z0.70_M13.00_Nk1.dat", skiprows=0))
 
     Z = np.transpose(np.nan_to_num(b1l[kidx]))
     X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
@@ -337,3 +339,18 @@ cbar.set_label(label=(
 plt.savefig("./dsigmaMinit.png")
 np.savetxt("dsigmaMinit.txt", Z)
 
+
+Z = np.transpose(np.nan_to_num(b1Lderivative))
+X, Y = np.meshgrid(np.log10(m_ax), omega_ax/omega_cdm_LCDM)
+fig, ax = plt.subplots(1,1)
+hmap = ax.pcolormesh(X, Y, Z, vmin=np.min(Z), vmax=np.max(Z), shading="auto", cmap='magma')
+ax.tick_params(axis='both')
+ax.set_xlabel(r"$\log{\left(m_\phi ~/~ {\rm [eV]}\right)}$")
+ax.set_ylabel(r"$\omega_{\phi,0} ~/~ \omega_{{\rm d}, 0}$")
+ax.set_ylim((0.,0.1))
+cbar = plt.colorbar(hmap)
+cbar.set_label(label=(
+    r"$d\delta_{crit}/d\delta_{long}$")#, size=50
+)
+plt.savefig("./b1Lderivative.png")
+np.savetxt("b1Lderivative.txt", Z)
