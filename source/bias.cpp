@@ -15,7 +15,7 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
     int lengthname=200;
     char *filename; //To open files.
     filename=(char *)malloc((lengthname+1)*sizeof(char));
-    FILE *fp;
+    FILE *fp, *fderiv;
     double *klong_list;//in 1/Mpc. Input and closest CAMB values.
     klong_list = allocate_1D_array(cosmo->N_klong);
     int i_delta_long, i_klong, i, j;
@@ -318,6 +318,16 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
 
     int iM;
 
+    lengthname=sprintf(
+        filename,
+        "output/result-%d/b1Lderivative_z%.2f_M%.2f_Nk%d.dat",
+        cosmo->file_tag,
+        cosmo->z_collapse,
+        log10(cosmo->Mhalo),
+        cosmo->N_klong
+    );
+    fderiv=fopen(filename,"w");
+
     for(iM=0;iM<cosmo->N_Mhalo;iM++){
         cosmo->Mhalo = cosmo->Mhalo_array[iM];
         cosmo->Mhalo_Mpc = cosmo->Mhalo * MsuntoMpc;
@@ -435,6 +445,13 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
                 )
             ); 
             // ddelta_crit/ddelta_long
+
+            fprintf(
+                fderiv,
+                "%.4le \n",
+                derivative
+            );
+
 
             b_L[i_klong] = HMF * derivative;
         }
@@ -614,7 +631,7 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
         }
         fclose(fp);
     }//end of Mhalo loop
-
+    fclose(fderiv);
 
     //////////////////////////////////////////
     //// we free the allocated memory /////
