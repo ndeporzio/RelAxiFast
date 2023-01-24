@@ -91,7 +91,7 @@ omega_nu = sum_massive_nu/93.2 # Units: none
 redshift = 0.65 # Units: none
 kmin = 1.0e-4 # Units: 
 kmax = 1.0 # Units: 
-Nk = 1 # Units: none
+Nk = 50 # Units: none
 
 f_cdm_LCDM = omega_cdm_LCDM/(omega_cdm_LCDM + omega_b_LCDM)
 f_b_LCDM = omega_b_LCDM/(omega_cdm_LCDM + omega_b_LCDM)

@@ -15,7 +15,7 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
     int lengthname=200;
     char *filename; //To open files.
     filename=(char *)malloc((lengthname+1)*sizeof(char));
-    FILE *fp, *fderiv, *fklonghigh, *fklonglow, *fdeltacrithigh, *fdeltacritlow, *fhmf, *fb1L;
+    FILE *fp;
     double *klong_list;//in 1/Mpc. Input and closest CAMB values.
     klong_list = allocate_1D_array(cosmo->N_klong);
     int i_delta_long, i_klong, i, j;
@@ -318,70 +318,6 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
 
     int iM;
 
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/b1Lderivative_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fderiv=fopen(filename,"w");
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/klonghigh_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fklonghigh=fopen(filename,"w");
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/klonglow_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fklonglow=fopen(filename,"w");
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/deltacrithigh_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fdeltacrithigh=fopen(filename,"w");
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/deltacritlow_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fdeltacritlow=fopen(filename,"w");
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/hmf_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fhmf=fopen(filename,"w");
-    lengthname=sprintf(
-        filename,
-        "output/result-%d/b1L_z%.2f_M%.2f_Nk%d.dat",
-        cosmo->file_tag,
-        cosmo->z_collapse,
-        log10(cosmo->Mhalo),
-        cosmo->N_klong
-    );
-    fb1L=fopen(filename,"w");
-
     for(iM=0;iM<cosmo->N_Mhalo;iM++){
         cosmo->Mhalo = cosmo->Mhalo_array[iM];
         cosmo->Mhalo_Mpc = cosmo->Mhalo * MsuntoMpc;
@@ -500,15 +436,6 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
             ); 
             // ddelta_crit/ddelta_long
             b_L[i_klong] = HMF * derivative;
-
-            fprintf(fderiv, "%.4le \n", derivative);
-            fprintf(fklonghigh, "%.4le \n", delta_long_collapse[N_delta_long-1][i_klong]);
-            fprintf(fklonglow, "%.4le \n", delta_long_collapse[0][i_klong]);
-            fprintf(fdeltacrithigh, "%.4le \n", delta_short_crit[N_delta_long-1][i_klong]);
-            fprintf(fdeltacritlow, "%.4le \n", delta_short_crit[0][i_klong]);
-            fprintf(fhmf, "%.4le \n", HMF);
-            fprintf(fb1L, "%.4le \n", b_L[i_klong]);
-
         }
 
 
@@ -686,13 +613,6 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
         }
         fclose(fp);
     }//end of Mhalo loop
-    fclose(fderiv);
-    fclose(fklonghigh);
-    fclose(fklonglow);
-    fclose(fdeltacrithigh);
-    fclose(fdeltacritlow);
-    fclose(fhmf);
-    fclose(fb1L);
 
     //////////////////////////////////////////
     //// we free the allocated memory /////
