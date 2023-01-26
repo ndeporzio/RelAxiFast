@@ -385,7 +385,7 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
             log10(cosmo->Mhalo),
             cosmo->N_klong
         ); 
-        fp=fopen(filename,"a");
+        fp=fopen(filename,"w");
         //if(print_headers!=0){
         //    fprintf(fp,"k_long[1/Mpc]   bias Lagrangian \n");
         //}
@@ -446,7 +446,7 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
             log10(cosmo->Mhalo),
             cosmo->N_klong
         ); 
-        fp=fopen(filename,"a");
+        fp=fopen(filename,"w");
         //if(print_headers!=0){
         //    fprintf(fp,"k_long[1/Mpc]   bias Lagrangian \n");
         //}
