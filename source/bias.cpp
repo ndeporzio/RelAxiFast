@@ -377,6 +377,21 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
             }
         }
 
+        lengthname=sprintf(
+            filename,
+            "output/result-%d/delta_crit_sim_z%.2f_M%.2f_Nk%d.dat",
+            cosmo->file_tag,
+            cosmo->z_collapse, 
+            log10(cosmo->Mhalo),
+            cosmo->N_klong
+        ); 
+        fp=fopen(filename,"a");
+        //if(print_headers!=0){
+        //    fprintf(fp,"k_long[1/Mpc]   bias Lagrangian \n");
+        //}
+        fprintf(fp,"%le \n", delta_crit_sim);
+        fclose(fp);
+
         delta_crit_sim/=(1.*counter);
         if(debug_mode>0){
             printf("delta_sim=1.686, delta_us=%.3le \n",delta_crit_sim);
@@ -422,6 +437,22 @@ int get_bias(Cosmology *cosmo, double *zlist_transfer){
         }
 
         //printf("HMF = %le \n",HMF);
+
+        lengthname=sprintf(
+            filename,
+            "output/result-%d/HMF_z%.2f_M%.2f_Nk%d.dat",
+            cosmo->file_tag,
+            cosmo->z_collapse, 
+            log10(cosmo->Mhalo),
+            cosmo->N_klong
+        ); 
+        fp=fopen(filename,"a");
+        //if(print_headers!=0){
+        //    fprintf(fp,"k_long[1/Mpc]   bias Lagrangian \n");
+        //}
+        fprintf(fp,"%le \n", HMF);
+        fclose(fp);
+
 
         for(i_klong=0;i_klong<cosmo->N_klong;i_klong++){
             derivative=(
