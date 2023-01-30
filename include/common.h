@@ -50,7 +50,7 @@
     //delta_shorts over which we
     //search.
     
-    #define delta_long_max 0.001    //the maximum
+    #define delta_long_max 0.01    //the maximum
     //#define delta_long_max (delta_short_constant_centroid/10.0)    //the maximum
     //delta_long
     //we take to
