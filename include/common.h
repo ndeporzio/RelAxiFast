@@ -34,7 +34,7 @@
     //Recommended 2, above 4 barely any
     //difference.
     
-    #define precision_normalization 4    //from 1 to 10, precision in the
+    #define precision_normalization 10    //from 1 to 10, precision in the
     //normalization of the bias, it also
     //makes the collapse ODE solver use
     //more points, taking longer.
