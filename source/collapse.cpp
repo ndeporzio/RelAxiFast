@@ -800,7 +800,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
         * (2.0+boost_initial_conditions)
     );
 
-    const double tolerance=0.00001
+    const double tolerance=0.00001;
     //const double tolerance=(
     //    0.0002
     //    / fmax(fmin(precision_scale,10.),1.)
