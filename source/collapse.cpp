@@ -425,7 +425,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     ////    we create an interpolation table for the equations  of state      
     ///////////////////////////////////////////////////////////////////////////
 
-    const int Nz_EoS=5000; 
+    const int Nz_EoS=1000; 
     //how many redshifts we take for the EoS. 1000 is fine for z
 
     //first for nu1
@@ -800,10 +800,11 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
         * (2.0+boost_initial_conditions)
     );
 
-    const double tolerance=(
-        0.0002
-        / fmax(fmin(precision_scale,10.),1.)
-    ); 
+    const double tolerance=0.00001
+    //const double tolerance=(
+    //    0.0002
+    //    / fmax(fmin(precision_scale,10.),1.)
+    //); 
     //relative error before we call it converged. 
     //3e-4 should guarantee 0.1% in bias.
 
@@ -814,7 +815,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     //first try does not have to be as precise (if we do clustering), since it
     // is used to find Mnu collapse only.
 
-    const double tolerance_z = cosmo->z_collapse * 0.1; 
+    const double tolerance_z = cosmo->z_collapse * 0.01; 
     //this is just to make sure that we are not artificially converging to a 
     //"bisection" \delta_crit if our initial conditions are bad.
 
@@ -3386,8 +3387,7 @@ double find_z_collapse_masslessnu_axion(
     const int precision = (int) fmax(fmin(precision_normalization,10),1);
     //1<=precision<=20
 
-    const long npoints = 3000000;
-    //const long npoints = precision*30000; 
+    const long npoints = precision*30000; 
     //number of points for the ODE solution to converge, ~10^4 logspaced in z.
 
     double zf_code=cosmo->z_collapse/2.0;
