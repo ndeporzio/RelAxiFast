@@ -425,7 +425,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     ////    we create an interpolation table for the equations  of state      
     ///////////////////////////////////////////////////////////////////////////
 
-    const int Nz_EoS=1000; 
+    const int Nz_EoS=5000; 
     //how many redshifts we take for the EoS. 1000 is fine for z
 
     //first for nu1
@@ -3386,7 +3386,8 @@ double find_z_collapse_masslessnu_axion(
     const int precision = (int) fmax(fmin(precision_normalization,10),1);
     //1<=precision<=20
 
-    const long npoints = precision*30000; 
+    const long npoints = 3000000;
+    //const long npoints = precision*30000; 
     //number of points for the ODE solution to converge, ~10^4 logspaced in z.
 
     double zf_code=cosmo->z_collapse/2.0;
