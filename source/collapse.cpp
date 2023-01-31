@@ -800,7 +800,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
         * (2.0+boost_initial_conditions)
     );
 
-    const double tolerance=0.00001;
+    const double tolerance=0.000001;
     //const double tolerance=(
     //    0.0002
     //    / fmax(fmin(precision_scale,10.),1.)
@@ -815,7 +815,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     //first try does not have to be as precise (if we do clustering), since it
     // is used to find Mnu collapse only.
 
-    const double tolerance_z = cosmo->z_collapse * 0.01; 
+    const double tolerance_z = cosmo->z_collapse * 0.1; 
     //this is just to make sure that we are not artificially converging to a 
     //"bisection" \delta_crit if our initial conditions are bad.
 
