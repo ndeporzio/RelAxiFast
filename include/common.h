@@ -286,7 +286,7 @@
     + (boltzmann_tag==_AXIONCAMB_)*length_transfer_axioncamb \
     )
     
-    #define Nz_transfer 100    //how many redshifts we take for transfer
+    #define Nz_transfer 400    //how many redshifts we take for transfer
     //functions. For more than ~115 need to skip
     //lines in CLASS file, so it's not supported.
     
