@@ -18,11 +18,11 @@ m_ax = np.logspace(-32., -22., 51)
 
 Nruns = int(len(omega_ax)*len(m_ax))
 
-Tcdm_zk__m = len(m_ax)*[0]
-Tb_zk__m = len(m_ax)*[0]
-Tphi_zk__m = len(m_ax)*[0]
-klists = len(m_ax)*[0]
-zlists = len(m_ax)*[0]
+Tcdm_zk__m = []
+Tb_zk__m = []
+Tphi_zk__m = []
+klists = []
+zlists = []
 
 Tcdminterp_zk__m = len(m_ax)*[0]
 Tbinterp_zk__m = len(m_ax)*[0]
@@ -42,14 +42,16 @@ for idx in range(Nruns):
 
         #Collect all the redshift values 
         filenames = os.listdir(transferprepath+str(idx+1)+transferpostpath)
-        for idx, val in enumerate(filenames): 
-            if (val[0:15]=='_transfer_out_z'): 
-                zlist.append(float(val[15:]))
+        for f_idx, f_val in enumerate(filenames): 
+            if (f_val[0:15]=='_transfer_out_z'): 
+                zlist.append(float(f_val[15:]))
         zlist = np.sort(zlist)     
         klist = np.loadtxt(transferprepath+str(idx+1)+transferpostpath+'_transfer_out_z'+f"{zlist[0]:.3f}")[:,0]
-   
+  
+        print("m idx:", m_idx)
+        print("N idx:", idx)   
         for zidx, zval in enumerate(zlist):
-            transfers=np.loadtxt(transferprepath+str(idx+1)+transferpostpath+'_transfer_out_z'+f"{zlist[0]:.3f}")
+            transfers=np.loadtxt(transferprepath+str(idx+1)+transferpostpath+'_transfer_out_z'+f"{zval:.3f}")
             Tcdm_zk.append(transfers[:,1]) 
             Tb_zk.append(transfers[:,2]) 
             Tphi_zk.append(transfers[:,6]) 
@@ -60,26 +62,33 @@ for idx in range(Nruns):
         klists.append(klist)
         zlists.append(zlist)
 
-for idx in range(len(m_ax)): 
+for idx, val in enumerate(m_ax):
+    print("k shape", np.shape(klists[idx]))
+    print("z shape", np.shape(zlists[idx]))
+    print("T shape", np.shape(Tcdm_zk__m[idx])) 
     Tcdminterp_zk__m[idx] = scipy.interpolate.interp2d(klists[idx], zlists[idx], Tcdm_zk__m[idx], bounds_error=True)    
     Tbinterp_zk__m[idx] = scipy.interpolate.interp2d(klists[idx], zlists[idx], Tb_zk__m[idx], bounds_error=True)    
     Tphiinterp_zk__m[idx] = scipy.interpolate.interp2d(klists[idx], zlists[idx], Tphi_zk__m[idx], bounds_error=True)    
+    np.savetxt("TEST_Tcdm_zk__m1.0e"+f"{np.log10(val):.3f}"+".txt", Tcdm_zk__m[idx])
+    np.savetxt("TEST_Tb_zk__m1.0e"+f"{np.log10(val):.3f}"+".txt", Tb_zk__m[idx])
+    np.savetxt("TEST_Tphi_zk__m1.0e"+f"{np.log10(val):.3f}"+".txt", Tphi_zk__m[idx])
 
 
 zplot = zlists[0]
 
-np.savetxt("TEST_zlists.txt", zlists)
+#np.savetxt("TEST_zlists.txt", zlists) # z values are always the same 
 np.savetxt("TEST_zplot.txt", zplot)
-np.savetxt("TEST_klists.txt", klists)
+#np.savetxt("TEST_klists.txt", klists) # k values are always the same 
+np.savetxt("TEST_klist.txt", klists[0]) 
 np.savetxt("TEST_mplot.txt", m_ax) 
 
-Tcdm_mz__k = np.zeros((len(zinterp), len(m_ax)))
-Tb_mz__k = np.zeros((len(zinterp), len(m_ax)))
-Tphi_mz__k = np.zeros((len(zinterp), len(m_ax)))
+Tcdm_mz__k = np.zeros((len(zplot), len(m_ax)))
+Tb_mz__k = np.zeros((len(zplot), len(m_ax)))
+Tphi_mz__k = np.zeros((len(zplot), len(m_ax)))
 
 # First for 10^{-4} [Mpc]^{-1}
 for m_idx, m_val in enumerate(m_ax): 
-    for z_idx, z_val in enumerate(z_plot): 
+    for z_idx, z_val in enumerate(zplot): 
         Tcdm_mz__k[z_idx, m_idx] = Tcdminterp_zk__m[m_idx](np.power(10., -4.)/0.70148, z_val)
         Tb_mz__k[z_idx, m_idx] = Tbinterp_zk__m[m_idx](np.power(10., -4.)/0.70148, z_val)
         Tphi_mz__k[z_idx, m_idx] = Tphiinterp_zk__m[m_idx](np.power(10., -4.)/0.70148, z_val)
@@ -89,7 +98,7 @@ np.savetxt("TEST_Tphi_k1.0e-4.txt", Tphi_mz__k)
 
 # Then for 10^{-0.5} [Mpc]^{-1}
 for m_idx, m_val in enumerate(m_ax): 
-    for z_idx, z_val in enumerate(z_plot): 
+    for z_idx, z_val in enumerate(zplot): 
         Tcdm_mz__k[z_idx, m_idx] = Tcdminterp_zk__m[m_idx](np.power(10., -0.5)/0.70148, z_val)
         Tb_mz__k[z_idx, m_idx] = Tbinterp_zk__m[m_idx](np.power(10., -0.5)/0.70148, z_val)
         Tphi_mz__k[z_idx, m_idx] = Tphiinterp_zk__m[m_idx](np.power(10., -0.5)/0.70148, z_val)
