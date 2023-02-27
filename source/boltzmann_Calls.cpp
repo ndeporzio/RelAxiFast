@@ -1386,32 +1386,28 @@ int boltzmann(Cosmology *cosmo, double *zlist_transfer){
 
     long jz;
 
-    const double zstep_transfer=((zf)-(zi))/(Nz_transfer-2); 
-    //const double zstep_sqrt_transfer=(sqrt(zf)-sqrt(zi))/(Nz_transfer-1); 
+    const double zstep_sqrt_transfer=(sqrt(zf)-sqrt(zi))/(Nz_transfer-1); 
     //for reading the transfer functions
     //we use sqrt(z) spacing, since it samples better low z, and we cannot do 
     //log-spacing since we want to get to z=0.
 
-    zlist_transfer_code[0] = (zi - zstep_transfer); 
-    printf("%le \n",zlist_transfer_code[0]);
-    for(jz=0;jz<(Nz_transfer-1);jz++){
-        zlist_transfer_code[jz+1] = ((zi)+zstep_transfer*jz);
-        //zlist_transfer_code[jz] = pow(sqrt(zi)+zstep_sqrt_transfer*jz,2.);
-        printf("%le \n",zlist_transfer_code[jz+1]);
+    for(jz=0;jz<Nz_transfer;jz++){
+        zlist_transfer_code[jz] = pow(sqrt(zi)+zstep_sqrt_transfer*jz,2.);
+        //printf("%le \n",zlist_transfer_code[jz]);
     }
 
     //we tweak the zlist a bit
     //first we make sure the first z after zi is close to have accurate 
     //derivative
-    //double epsilon_z=0.005; 
+    double epsilon_z=0.005; 
     // dz/z at z_i to compute derivative, 0.005 is good, not terribly important,
     //since it's a small correction.
 
-    //zlist_transfer_code[0]=zi*(1.+epsilon_z); 
+    zlist_transfer_code[0]=zi*(1.+epsilon_z); 
     //we overwrite the first non-zi z, for derivative at zi to be accurate.
 
-    //zlist_transfer_code[1]=zi;
-    //zlist_transfer_code[2]=zi*(1.-epsilon_z); 
+    zlist_transfer_code[1]=zi;
+    zlist_transfer_code[2]=zi*(1.-epsilon_z); 
     //we also overwrite the third non-zi z, for derivative at zi to be more 
     //accurate.
 
