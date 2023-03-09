@@ -637,8 +637,8 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
         }
     
 
-        rho_axion_zi=interpol(cosmo->axion_rho, cosmo->axion_z, *cosmo->axion_N, zi);
-        rho_axion_z0=interpol(cosmo->axion_rho, cosmo->axion_z, *cosmo->axion_N, zf);
+        rho_axion_zi=interpol(cosmo->axion_rho, cosmo->axion_z, 2*(*cosmo->axion_N), zi);
+        rho_axion_z0=interpol(cosmo->axion_rho, cosmo->axion_z, 2*(*cosmo->axion_N), zf);
         rho_axion_ratio_zi=rho_axion_zi/rho_axion_z0;
         printf("rho_axion_zi=%.6le \n", rho_axion_zi);
         printf("rho_axion_z0=%.6le \n", rho_axion_z0);
@@ -1318,8 +1318,13 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
 //                        );
 //
 //                    }
-
-
+        
+                    //printf("Nz_EoS: %d \n", Nz_EoS); 
+                    //printf("Running collapse with the following axion energy density: \n");
+                    //int i; 
+                    //for (i=0;i < Nz_EoS;i++) {
+                    //    printf("%le \t %le \n",zlist_EoS[i], rholist_axion_EoS[i]);
+                    //}
                     if(cosmo->Omega_extra+cosmo->Omeganu2+cosmo->Omeganu1==0){
                         //nothing extra
                         if (debug_mode>0) printf(
@@ -3416,6 +3421,7 @@ double find_z_collapse_masslessnu_axion(
 
     const double T_matter=Tfm_klong;
 
+
     double rhoaxion_0=rholistaxion_EoS[0];//axion at z=0.  
     //we set the initial H. All these are average densities.
     double OmGbar= cosmo->OmegaG * pow(1.+zi,4.); //photon
@@ -3501,6 +3507,9 @@ double find_z_collapse_masslessnu_axion(
 
     double Rpp1, Rpp2; //d^2R(z)/dz^2
 
+    FILE * fcollapse_output;
+    fcollapse_output=fopen("collapse_output.dat", "w");
+    fprintf(fcollapse_output, "z\t w\t ceff2\t Oaxion\t rhoaxion\t k_long\t delta_long\t delta_axion_z\t T_axion_z\t T_matter\n");
     /////////////////////////////////////////////////////////
     ////    here we solve for the collapse                     
     /////////////////////////////////////////////////////////
@@ -3628,7 +3637,12 @@ double find_z_collapse_masslessnu_axion(
         //and these will be the next-z solutions.
         R2 = R1 + zstep_lin/2.0 * (Rp1 + Rp1tilde);
         Rp2 = Rp1 + zstep_lin/2.0 * (Rpp1 + Rpp2);
+
+        //debugging
+        fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n", 
+            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter); 
     }
+    fclose(fcollapse_output);
     FILE * cs2file;
     cs2file=fopen("collapse_cs2_ef.dat", "a+");
     fprintf(cs2file, "%le \t %le \t %le \n", k_long, z, csq_ef_axion_z); 
