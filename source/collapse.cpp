@@ -3439,7 +3439,8 @@ double find_z_collapse_masslessnu_axion(
         Tfm_klong, 
         zlist_transfer, 
         Nz_transfer, 
-        zi
+//        zi
+        cosmo->z_collapse
     );
 
     double rhoaxion_0=rholistaxion_EoS[0];//axion at z=0.  
@@ -3575,12 +3576,12 @@ double find_z_collapse_masslessnu_axion(
 
         //we update all z-dependent stuff to the next z
         OmGbar= cosmo->OmegaG * pow(1.+z_next,4.);
-        T_matter = interpol(
-            Tfm_klong, 
-            zlist_transfer, 
-            Nz_transfer, 
-            z_next
-        );
+        //T_matter = interpol(
+        //    Tfm_klong, 
+        //    zlist_transfer, 
+        //    Nz_transfer, 
+        //    z_next
+        //);
         T_gamma = interpol(
             transfer_gamma_klong, 
             zlist_transfer, 
