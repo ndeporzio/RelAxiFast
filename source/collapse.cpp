@@ -3527,9 +3527,14 @@ double find_z_collapse_masslessnu_axion(
 
     double Rpp1, Rpp2; //d^2R(z)/dz^2
 
+    double Oaxion =( 
+            (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
+        ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
     FILE * fcollapse_output;
     fcollapse_output=fopen("collapse_output.dat", "w");
-    fprintf(fcollapse_output, "z\t w\t ceff2\t Oaxion\t rhoaxion\t k_long\t delta_long\t delta_axion_z\t T_axion_z\t T_matter\n");
+    fprintf(fcollapse_output, "z\t w\t ceff2\t Oaxion\t rhoaxion\t k_long\t delta_long\t delta_axion_z\t T_axion_z\t T_matter\t R \t Rp\n");
+    fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n",
+            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter, R1, Rp1);
     /////////////////////////////////////////////////////////
     ////    here we solve for the collapse                     
     /////////////////////////////////////////////////////////
@@ -3552,7 +3557,7 @@ double find_z_collapse_masslessnu_axion(
 
         //these are the terms that go inside the sum, define them outside for 
         //clarity.
-        double Oaxion =( 
+        Oaxion =( 
             (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
         ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
         //double Oaxion =(
@@ -3665,8 +3670,8 @@ double find_z_collapse_masslessnu_axion(
         Rp2 = Rp1 + zstep_lin/2.0 * (Rpp1 + Rpp2);
 
         //debugging
-        fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n", 
-            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter); 
+        fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n", 
+            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter, R1, Rp1); 
     }
     fclose(fcollapse_output);
     FILE * cs2file;
