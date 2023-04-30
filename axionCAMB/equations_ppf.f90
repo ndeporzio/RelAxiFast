@@ -2814,7 +2814,10 @@ grhoax_t=dorp*a2
         
 
         !print*,k,a,tau,clxax,clxg,clxc,(1.0d0-w_ax)+3.0d0*adotoa*(1.0d0-cad2_use)*v_ax/(k*clxax),cad2_use
-        
+    
+        !print quantities and effective sound speed 
+        print*, k, a, tau, adotoa, clxax, v_ax, w_ax, cad2_use, csquared_ax_use, &
+            &1.0d0+((3.0d0*adotoa*(1.0d0-(cad2_use*cad2_use))*v_ax)/(k*clxax*(1.0d0+w_ax))) 
         
         
         ayprime(EV%a_ix)=clxaxdot
