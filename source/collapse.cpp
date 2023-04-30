@@ -3513,6 +3513,7 @@ double find_z_collapse_masslessnu_axion(
     //and the w and c_s^2 of nus at first step we calculate.
     //for axion sound speed and equation of state
     paxion_z=interpol_cubic(zmin_EoS, dz_EoS, plistaxion_EoS, Nz_EoS, z_next);
+    double cad2_axion = interpol(cosmo->axion_cad2, cosmo->axion_z, 2*(*cosmo->axion_N), z_next); 
     double waxion_z2=paxion_z/rhoaxion_z;
     double d_waxion_z = (waxion_z2-waxion_z)/(z_next-zi);
     double a_next = (1./(1.+z_next));

@@ -88,6 +88,7 @@ int main(int argc, char** filenameinput){
     cosmo->axion_rho = allocate_1D_array(2*axion_N);
     cosmo->axion_p = allocate_1D_array(2*axion_N);
     cosmo->axion_omega = allocate_1D_array(2*axion_N);
+    cosmo->axion_cad2 = allocate_1D_array(2*axion_N);
 
     double axion_a[2*axion_N];
     double axion_w[2*axion_N];
@@ -95,6 +96,7 @@ int main(int argc, char** filenameinput){
     double axion_z[2*axion_N];
     double axion_p[2*axion_N];
     double axion_omega[2*axion_N];  
+    double axion_cad2[2*axion_N];  
     double temp;    
     double axion_osc; 
 
@@ -114,7 +116,7 @@ int main(int argc, char** filenameinput){
             "%le %le %le %le",
             &axion_a[j], 
             &axion_w[j], 
-            &temp, 
+            &axion_cad2[j], 
             &axion_rho[j]
         )==4; 
         ++j
@@ -175,6 +177,7 @@ int main(int argc, char** filenameinput){
                 axion_a[j]=1./(axion_z[j] + 1.);
                 axion_rho[j]=rho_osc * pow((1+axion_z[j])/(1+z_osc), 3.); 
                 axion_omega[j] = omega_osc * pow(a_osc/axion_a[j], 3.);
+                axion_cad2[j]=0.; 
             };  
             //printf("%le \t %le \t %.10e \n", axion_a[j], axion_w[j], axion_rho[j]); 
         };
@@ -188,6 +191,7 @@ int main(int argc, char** filenameinput){
         cosmo->axion_a[j] = axion_a[2*axion_N-j-1];
         cosmo->axion_rho[j] = axion_rho[2*axion_N-j-1];
         cosmo->axion_omega[j] = axion_omega[2*axion_N-j-1];
+        cosmo->axion_cad2[j] = axion_cad2[2*axion_N-j-1];
         //printf("%le \t %le \t %.10e \n", cosmo->axion_a[j], cosmo->axion_w[j], cosmo->axion_rho[j]);
     }; 
 
