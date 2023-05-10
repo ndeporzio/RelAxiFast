@@ -65,13 +65,13 @@ omega_b_LCDM = 0.02226 # Units: none
 h_LCDM = 0.70148 # Units: none 
 
 m_ax = np.logspace(-32., -22., 51) # Units: eV
-omega_ax = np.linspace(0.06, 0.10, 17)*omega_cdm_LCDM 
+#omega_ax = np.linspace(0.06, 0.10, 17)*omega_cdm_LCDM 
 #m_ax = np.logspace(-32., -22., 201) # Units: eV
 #omega_ax = np.linspace(0.06, 0.10, 33)*omega_cdm_LCDM 
-#omega_ax = np.concatenate(( # Units: none
-#    np.array([1.0e-9*omega_cdm_LCDM]), 
-#    np.linspace(0.0025, 0.1000, 40)*omega_cdm_LCDM 
-#))
+omega_ax = np.concatenate(( # Units: none
+    np.array([1.0e-9*omega_cdm_LCDM]), 
+    np.linspace(0.0025, 0.1000, 40)*omega_cdm_LCDM 
+))
 
 print("Axion masses: ", m_ax)
 print("Axion abundances (% CDM): ", omega_ax/omega_cdm_LCDM)

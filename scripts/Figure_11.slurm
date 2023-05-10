@@ -29,7 +29,7 @@ git clone git@github.com:ndeporzio/RelAxiFast.git $RELAXIFAST_DIR
 cd $RELAXIFAST_DIR
 git checkout cluster
 mkdir axperts
-cp "${SCRATCH}/dvorkin_lab/ndeporzio/2023.04.30_AxPertsEvolution/axperts_out__*" ./axperts
+cp /n/holyscratch01/dvorkin_lab/ndeporzio/2023.04.30_AxPertsEvolution/axperts_out__* ./axperts
 module load gcc/10.2.0-fasrc01
 python scripts/compile_RelAxiFast.py
 echo $RELAXIFAST_DIR
