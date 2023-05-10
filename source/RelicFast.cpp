@@ -196,6 +196,116 @@ int main(int argc, char** filenameinput){
     }; 
 
     //we now solve for the collapse and calculate the biases at each z
+    //  // First, consult appropriate lookup table for axion sound speed 
+    //filename = "axperts/
+    int axmassidxs[51];
+    double axmasses[51];
+    for (int i = 0; i < 51; i++) {
+        axmassidxs[i] = i+1;
+        axmasses[i] = (-32.0 + i*0.2);
+    };
+    int axidx = (find_value(51, axmasses, log10(cosmo->m_ax))+1);
+
+    int ROWS=570; 
+    int COLUMNS=3000; 
+    cosmo->axion_atable = allocate_1D_array(COLUMNS);  
+    cosmo->axion_ktable = allocate_1D_array(ROWS);  
+    cosmo->axion_adotoatable = allocate_2D_array(ROWS, COLUMNS); 
+    cosmo->axion_cad2table = allocate_2D_array(ROWS, COLUMNS); 
+    cosmo->axion_uaxtable = allocate_2D_array(ROWS, COLUMNS); 
+    cosmo->axion_waxtable = allocate_2D_array(ROWS, COLUMNS); 
+    cosmo->axion_ca2table = allocate_2D_array(ROWS, COLUMNS); 
+    cosmo->axion_cs2table = allocate_2D_array(ROWS, COLUMNS); 
+    //double axion_atable[COLUMNS];
+    //double axion_ktable[ROWS];
+    //double axion_adotoa[ROWS][COLUMNS];
+    //double axion_cad2[ROWS][COLUMNS];
+    //double axion_uax[ROWS][COLUMNS];
+    //double axion_wax[ROWS][COLUMNS];
+    //double axion_cs2[ROWS][COLUMNS];
+
+
+    printf("Loading a table...\n"); 
+    std::ifstream file1("axperts/axperts_out__atable_"+std::to_string(axidx)+".txt");
+    if (file1.is_open()) {
+      // Read each value from the file and store it in the array
+        for (int j = 0; j < COLUMNS; j++) {
+          file1 >> cosmo->axion_atable[j];
+        }
+      file1.close();
+    }
+    printf("%le \n", cosmo->axion_atable[0]); 
+    printf("Loading k table...\n"); 
+    std::ifstream file2("axperts/axperts_out__ktable_"+std::to_string(axidx)+".txt");
+    if (file2.is_open()) {
+      // Read each value from the file and store it in the array
+        for (int j = 0; j < ROWS; j++) {
+          file2 >> cosmo->axion_ktable[j];
+        }
+      file2.close();
+    }
+    printf("%le \n", cosmo->axion_ktable[0]); 
+    printf("Loading adotoa table...\n"); 
+    std::ifstream file3("axperts/axperts_out__adotoatable_"+std::to_string(axidx)+".txt");
+    if (file3.is_open()) {
+      // Read each value from the file and store it in the array
+      for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+          file3 >> cosmo->axion_adotoatable[i][j];
+        }
+      }
+      file3.close();
+    }
+    printf("%le \n", cosmo->axion_adotoatable[0][0]); 
+    std::ifstream file4("axperts/axperts_out__cad2table_"+std::to_string(axidx)+".txt");
+    if (file4.is_open()) {
+      // Read each value from the file and store it in the array
+      for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+          file4 >> cosmo->axion_cad2table[i][j];
+        }
+      }
+      file4.close();
+    }
+    std::ifstream file5("axperts/axperts_out__vaxtable_"+std::to_string(axidx)+".txt");
+    if (file5.is_open()) {
+      // Read each value from the file and store it in the array
+      for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+          file5 >> cosmo->axion_uaxtable[i][j];
+        }
+      }
+      file5.close();
+    }
+    std::ifstream file6("axperts/axperts_out__waxtable_"+std::to_string(axidx)+".txt");
+    if (file6.is_open()) {
+      // Read each value from the file and store it in the array
+      for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+          file6 >> cosmo->axion_waxtable[i][j];
+        }
+      }
+      file6.close();
+    }
+    std::ifstream file7("axperts/axperts_out__csquaredaxusetable_"+std::to_string(axidx)+".txt");
+    if (file7.is_open()) {
+      // Read each value from the file and store it in the array
+      for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+          file7 >> cosmo->axion_ca2table[i][j];
+        }
+      }
+      file7.close();
+    }
+    printf("Building sound speed table...\n"); 
+    for (int i = 0; i < ROWS; i++) {
+      for (int j = 0; j < COLUMNS; j++) {
+        cosmo->axion_cs2table[i][j] = 1.+(3.*cosmo->axion_adotoatable[i][j]*(1.-cosmo->axion_cad2table[i][j])*cosmo->axion_uaxtable[i][j])/(cosmo->axion_ktable[i]*(1.+cosmo->axion_waxtable[i][j]));
+      }
+    }
+    printf("%le \n", cosmo->axion_cs2table[0][0]);
+
+    //  //Ok, now run collapse
     for(iz=0;iz<cosmo->N_zcoll;iz++){
         cosmo->z_collapse = cosmo->z_collapse_array[iz];
 

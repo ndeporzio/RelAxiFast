@@ -213,9 +213,20 @@
     double *axion_w;
     double *axion_rho;
     double *axion_p;
-    double *axion_omega; 
+    double *axion_omega;
+    double *axion_cad2;  
     double *axion_osc;
-    int *axion_N;  
+    int *axion_N; 
+
+    double *axion_atable;
+    double *axion_ktable;  
+    double **axion_adotoatable; 
+    double **axion_cad2table; 
+    double **axion_uaxtable; 
+    double **axion_waxtable; 
+    double **axion_ca2table; 
+    double **axion_cs2table; 
+ 
     };
     
     #if boltzmann_tag==0
