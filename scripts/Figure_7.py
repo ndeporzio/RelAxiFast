@@ -45,10 +45,10 @@ matplotlib.rcParams.update({
 })
 ######################################################
 
-rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelicFast.nosync/"
+rfpath = "/Users/nicholasdeporzio/Downloads/RelAxiFast/"
 rfpath_outputsuffix = "output/result-0/"
 
-outpath = "/Users/nicholasdeporzio/Desktop/"
+outpath = "/Users/nicholasdeporzio/Downloads/"
 
 omega_cdm_LCDM = 0.1127
 omega_b_LCDM = 0.02226
@@ -212,7 +212,7 @@ for ax_idx, ax_val in enumerate(m_ax):
             expected_axioncamb_output_lines = int(ac_lines_out)
 
     # Collect axion background evolution
-    axion_background.append(np.loadtxt("/Users/nicholasdeporzio/Downloads/axion_background.dat"))    
+    axion_background.append(np.loadtxt(rfpath+"axion_background.dat"))    
     
     # Collect power spectrum for requested redshift 
     output_dirs = os.listdir(rfpath_boltzmannsuffix)
@@ -262,7 +262,7 @@ for ax_idx, ax_val in enumerate(m_ax):
     os.system('mv ./axionCAMB_Current/params_collapse.ini ./axionCAMB_Current/params_collapse_'+str(ax_idx+8)+'.ini')  
 
 kplot = np.geomspace(10**-4.0, 1., 100)
-
+np.savetxt(rfpath+"plots/Figure_7_kplot.txt", kplot)
 
 # eulerian bias plots
 #plt.figure()
@@ -315,6 +315,8 @@ for ax_idx, ax_val in enumerate(m_ax):
     rgb[2] = (len(m_ax)-1-ax_idx) * (255/(len(m_ax)-1)) / 255.
     
     yplot = lagbiasplot/lagbiasplot[0]
+
+    np.savetxt(rfpath+"plots/Figure_7_m"+f"{np.log10(ax_val):.1f}"+".txt", yplot)
     
     ax.plot(
         kplot, 
@@ -338,7 +340,7 @@ for ax_idx, ax_val in enumerate(m_ax):
     
 ax.plot(
     [0.70148*0.015, 0.70148*0.015], 
-    [0.9, 1.08], 
+    [0.9, 1.40], 
     color='black', 
     label=r'$k_{\rm eq}$',
     linestyle='dashed',
@@ -348,7 +350,7 @@ ax.set_xlabel(r'$k ~[{\rm Mpc}^{-1}]$')
 ax.set_ylabel(r'$b_1^L(k)/b_1^L(k_{\rm ref})$')
 ax.tick_params(axis='both')
 ax.set_xlim((1.0e-4, 1.0e0))
-ax.set_ylim((0.997, 1.07))
+ax.set_ylim((0.997, 1.40))
 ax.legend()
 ax.grid(False, which='both', axis='both')
 plt.savefig(rfpath+"plots/Figure_7.png") 
