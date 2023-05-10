@@ -285,7 +285,7 @@
     #define length_transfer_camb 597    //Number of elements in the transfer
     //function output from CAMB
     
-    #define length_transfer_axioncamb 571    //Number of elements in the transfer
+    #define length_transfer_axioncamb 570    //Number of elements in the transfer
     //function output from axionCAMB
     
     #define length_transfer_class 122    //Number of elements in the transfer

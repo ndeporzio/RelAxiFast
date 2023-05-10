@@ -4,7 +4,7 @@
 #SBATCH -N 1 # All cores on one Node
 #SBATCH -p shared # Partition
 #SBATCH --mem 2000 # Memory request (4Gb)
-#SBATCH -t 0-10:00 # Maximum execution time (D-HH:MM)
+#SBATCH -t 0-5:00 # Maximum execution time (D-HH:MM)
 #SBATCH -o "/n/home02/ndeporzio/projects/P005_FuzzyCdmBias/results/FIG11_%a.out" # Standard output
 #SBATCH -e "/n/home02/ndeporzio/projects/P005_FuzzyCdmBias/results/FIG11_%a.err" # Standard error
 #SBATCH --account=dvorkin_lab
