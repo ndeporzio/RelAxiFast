@@ -226,7 +226,7 @@ int main(int argc, char** filenameinput){
 
 
     printf("Loading a table...\n"); 
-    std::ifstream file1("axperts/axperts_out__atable_"+std::to_string(axidx)+".txt");
+    std::ifstream file1("../axperts/axperts_out__atable_"+std::to_string(axidx)+".txt");
     if (file1.is_open()) {
       // Read each value from the file and store it in the array
         for (int j = 0; j < COLUMNS; j++) {
@@ -236,7 +236,7 @@ int main(int argc, char** filenameinput){
     }
     printf("%le \n", cosmo->axion_atable[0]); 
     printf("Loading k table...\n"); 
-    std::ifstream file2("axperts/axperts_out__ktable_"+std::to_string(axidx)+".txt");
+    std::ifstream file2("../axperts/axperts_out__ktable_"+std::to_string(axidx)+".txt");
     if (file2.is_open()) {
       // Read each value from the file and store it in the array
         for (int j = 0; j < ROWS; j++) {
@@ -246,7 +246,7 @@ int main(int argc, char** filenameinput){
     }
     printf("%le \n", cosmo->axion_ktable[0]); 
     printf("Loading adotoa table...\n"); 
-    std::ifstream file3("axperts/axperts_out__adotoatable_"+std::to_string(axidx)+".txt");
+    std::ifstream file3("../axperts/axperts_out__adotoatable_"+std::to_string(axidx)+".txt");
     if (file3.is_open()) {
       // Read each value from the file and store it in the array
       for (int i = 0; i < ROWS; i++) {
@@ -257,7 +257,7 @@ int main(int argc, char** filenameinput){
       file3.close();
     }
     printf("%le \n", cosmo->axion_adotoatable[0][0]); 
-    std::ifstream file4("axperts/axperts_out__cad2table_"+std::to_string(axidx)+".txt");
+    std::ifstream file4("../axperts/axperts_out__cad2table_"+std::to_string(axidx)+".txt");
     if (file4.is_open()) {
       // Read each value from the file and store it in the array
       for (int i = 0; i < ROWS; i++) {
@@ -267,7 +267,7 @@ int main(int argc, char** filenameinput){
       }
       file4.close();
     }
-    std::ifstream file5("axperts/axperts_out__vaxtable_"+std::to_string(axidx)+".txt");
+    std::ifstream file5("../axperts/axperts_out__vaxtable_"+std::to_string(axidx)+".txt");
     if (file5.is_open()) {
       // Read each value from the file and store it in the array
       for (int i = 0; i < ROWS; i++) {
@@ -277,7 +277,7 @@ int main(int argc, char** filenameinput){
       }
       file5.close();
     }
-    std::ifstream file6("axperts/axperts_out__waxtable_"+std::to_string(axidx)+".txt");
+    std::ifstream file6("../axperts/axperts_out__waxtable_"+std::to_string(axidx)+".txt");
     if (file6.is_open()) {
       // Read each value from the file and store it in the array
       for (int i = 0; i < ROWS; i++) {
@@ -287,7 +287,7 @@ int main(int argc, char** filenameinput){
       }
       file6.close();
     }
-    std::ifstream file7("axperts/axperts_out__csquaredaxusetable_"+std::to_string(axidx)+".txt");
+    std::ifstream file7("../axperts/axperts_out__csquaredaxusetable_"+std::to_string(axidx)+".txt");
     if (file7.is_open()) {
       // Read each value from the file and store it in the array
       for (int i = 0; i < ROWS; i++) {
