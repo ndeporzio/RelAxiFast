@@ -298,12 +298,22 @@ int main(int argc, char** filenameinput){
       file7.close();
     }
     printf("Building sound speed table...\n"); 
-    for (int i = 0; i < ROWS; i++) {
-      for (int j = 0; j < COLUMNS; j++) {
-        cosmo->axion_cs2table[i][j] = 1.+(3.*cosmo->axion_adotoatable[i][j]*(1.-cosmo->axion_cad2table[i][j])*cosmo->axion_uaxtable[i][j])/(cosmo->axion_ktable[i]*(1.+cosmo->axion_waxtable[i][j]));
+    std::ifstream file8("../axperts/axperts_out__ceff2table_"+std::to_string(axidx)+".txt");
+    if (file8.is_open()) {
+      // Read each value from the file and store it in the array
+      for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLUMNS; j++) {
+          file8 >> cosmo->axion_cs2table[i][j];
+        }
       }
+      file8.close();
     }
-    printf("%le \n", cosmo->axion_cs2table[0][0]);
+//    for (int i = 0; i < ROWS; i++) {
+//      for (int j = 0; j < COLUMNS; j++) {
+//        cosmo->axion_cs2table[i][j] = 1.+(3.*cosmo->axion_adotoatable[i][j]*(1.-cosmo->axion_cad2table[i][j])*cosmo->axion_uaxtable[i][j])/(cosmo->axion_ktable[i]*cosmo->axion_deltatable[i][j]*(1.+cosmo->axion_waxtable[i][j]));
+//      }
+//    }
+//    printf("%le \n", cosmo->axion_cs2table[0][0]);
 
     //  //Ok, now run collapse
     for(iz=0;iz<cosmo->N_zcoll;iz++){
