@@ -3439,8 +3439,8 @@ double find_z_collapse_masslessnu_axion(
         Tfm_klong, 
         zlist_transfer, 
         Nz_transfer, 
-//        zi
-        cosmo->z_collapse
+        zi
+//        cosmo->z_collapse
     );
 
     double rhoaxion_0=rholistaxion_EoS[0];//axion at z=0.  
