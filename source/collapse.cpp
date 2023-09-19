@@ -831,12 +831,12 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     //transfer evaluated at klong, for quick interpolation.
     double **transfer_nu_massless_klong;
     double **transfer_nu1_klong;
-    double **transfer_matter_klong_test;
+    //double **transfer_matter_klong_test;
 
     transfer_gamma_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
     transfer_nu_massless_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
     transfer_nu1_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
-    transfer_matter_klong_test = allocate_2D_array(cosmo->N_klong,Nz_transfer);
+    //transfer_matter_klong_test = allocate_2D_array(cosmo->N_klong,Nz_transfer);
 
     //we set the initial cdm+b transfer functions, and the 
     //interpolators for all fluids.
@@ -909,15 +909,15 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
             //printf("i_klong=%d, i=%ld, z=%.3le, Tf_gamma=%.1le, Tf_nu=%.1le \n",i_klong, i, z,transfer_gamma_klong[i_klong][i],transfer_nu1_klong[i_klong][i]);
             //printf("k_long=%.1le, z=%.1le , T_g=%.1le \n",k_long, z, transfer_gamma_klong[i_klong][i]);
 
-            transfer_matter_klong_test[i_klong][i]=interpol_2D(
-                transfer_matter, 
-                zlist_transfer, 
-                Nz_transfer, 
-                k_transfer_array, 
-                length_transfer, 
-                z, 
-                k_long
-            );    
+            //transfer_matter_klong_test[i_klong][i]=interpol_2D(
+            //    transfer_matter, 
+            //    zlist_transfer, 
+            //    Nz_transfer, 
+            //    k_transfer_array, 
+            //    length_transfer, 
+            //    z, 
+            //    k_long
+            //);    
         }
     }
 
@@ -1350,7 +1350,8 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
                             Rpi, 
                             delta_long, 
                             zlist_transfer,
-                            transfer_matter_klong_test[i_klong], 
+                            Ti_klong[i_klong],
+                            //transfer_matter_klong_test[i_klong], 
                             transfer_gamma_klong[i_klong], 
                             transfer_nu_massless_klong[i_klong],
                             transfer_axion_klong[i_klong],
@@ -1829,8 +1830,8 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
                                     Rpi,
                                     delta_long,
                                     zlist_transfer,
-                                    //Ti_klong[i_klong],
-                                    transfer_matter_klong_test[i_klong],
+                                    Ti_klong[i_klong],
+                                    //transfer_matter_klong_test[i_klong],
                                     transfer_gamma_klong[i_klong],
                                     transfer_nu_massless_klong[i_klong],
                                     transfer_axion_klong[i_klong],
@@ -3382,8 +3383,8 @@ double find_z_collapse_masslessnu_axion(
     const double Rpi, 
     const double delta_long, 
     double * const  zlist_transfer,
-    //const double Tfm_klong, 
-    double * const Tfm_klong,
+    const double Tfm_klong, 
+    //double * const Tfm_klong,
     double * const transfer_gamma_klong, 
     double * const transfer_nu_klong, 
     double * const transfer_axion_klong,
@@ -3434,14 +3435,14 @@ double find_z_collapse_masslessnu_axion(
     long i;
     double z=zi;
 
-    // //const double T_matter=Tfm_klong;
-    double T_matter = interpol(
-        Tfm_klong, 
-        zlist_transfer, 
-        Nz_transfer, 
-        zi
-//        cosmo->z_collapse
-    );
+    const double T_matter=Tfm_klong;
+    //double T_matter = interpol(
+    //    Tfm_klong, 
+    //    zlist_transfer, 
+    //    Nz_transfer, 
+    //    zi
+    //    cosmo->z_collapse
+    //);
 
     double rhoaxion_0=rholistaxion_EoS[0];//axion at z=0.  
     //we set the initial H. All these are average densities.
