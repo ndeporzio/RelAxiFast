@@ -1,5 +1,5 @@
 # Mac OSX files
-.DS_Store 
+*.DS_Store 
 
 # Compilation and installation files
 relicfast
