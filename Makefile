@@ -3,9 +3,9 @@ ODIR = ./objects
 SRCDIR = ./source
 
 #remove this line to cancel parallelization (it's only used in collapse.cpp)
-parallel = -fopenmp
+#parallel = -fopenmp
 
-CC=gcc
+CC=gcc-10
 
 CFLAGS=-I $(IDIR) -O4 -ffast-math -lstdc++ $(parallel) -lm
 
