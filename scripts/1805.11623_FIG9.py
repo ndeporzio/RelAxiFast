@@ -13,7 +13,7 @@ axioncamb_data_eulbias = []
 axioncamb_data_lagbias = []
 axioncamb_data_tf = []
 
-rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelicFast/"
+rfpath = "/Users/nicholasdeporzio/Documents/Academic/Projects/P005_FuzzyCdmBias/RelAxiFast.nosync/"
 rfpath_outputsuffix = "output/result-0/"
 outpath = "/Users/nicholasdeporzio/Desktop/"
 
@@ -170,4 +170,5 @@ plt.ylabel(r'$b_1^L(k)/b_1^L(k_{\rm ref})$', fontsize=15)
 plt.title(r'1805.11623 Fig 9, axionCAMB', fontsize=15)
 plt.legend(fontsize=15)
 plt.grid(True, which='both', axis='both')
-plt.savefig("1805.11623_FIG9.png")    
+plt.savefig(outpath+"1805.11623_FIG9.png")    
+
