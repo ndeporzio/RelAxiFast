@@ -3522,7 +3522,14 @@ double find_z_collapse_masslessnu_axion(
 
     //double csq_ef_axion_z = interpol_2D(cosmo->axion_cs2table, cosmo->axion_ktable, 570, cosmo->axion_atable, 3000, k_long, a_next);  
 
-    double csq_ef_axion_z = ( pow(k_long/km, 2.)/(1.+pow(k_long/km, 2.)) ); 
+    //double csq_ef_axion_z = ( pow(k_long/km, 2.)/(1.+pow(k_long/km, 2.)) ); 
+    double csq_ef_axion_z; 
+    if(a_next<*cosmo->axion_osc){
+        csq_ef_axion_z = 1.0; 
+    }else{
+        csq_ef_axion_z = ( pow(k_long/km, 2.)/(1.+pow(k_long/km, 2.)) );
+    }
+
 
     //double csq_ad_axion_z = waxion_z2 + d_waxion_z/(3.0*(1+waxion_z2))*(1.0+z_next); 
     //sound speed squared, calculated as w - w'/(3*(1+w)*(1+z)).
