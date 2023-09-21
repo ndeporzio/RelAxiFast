@@ -3635,7 +3635,12 @@ double find_z_collapse_masslessnu_axion(
         d_waxion_z = (waxion_z2-waxion_z)/zstep_lin;
         a_next = (1./(1.+z_next));
         km = 2. * cosmo->m_ax * a_next * MpctoeV_natural;
-        csq_ef_axion_z = ( pow(k_long/km, 2.)/(1.+pow(k_long/km, 2.)) );
+        //csq_ef_axion_z = ( pow(k_long/km, 2.)/(1.+pow(k_long/km, 2.)) );
+        if(a_next<*cosmo->axion_osc){
+            csq_ef_axion_z = 1.0; 
+        }else{
+            csq_ef_axion_z = ( pow(k_long/km, 2.)/(1.+pow(k_long/km, 2.)) );
+        }
         //csq_ad_axion_z = waxion_z2 + d_waxion_z/3.0*(1.0+z_next)/(1.0+waxion_z2); 
         //adiabatic sound speed squared.
         //cs2file=fopen("/Users/nicholasdeporzio/Downloads/collapse_cs2_ad.dat", "a+");
