@@ -5,7 +5,7 @@ SRCDIR = ./source
 #remove this line to cancel parallelization (it's only used in collapse.cpp)
 #parallel = -fopenmp
 
-CC=gcc-10
+CC=gcc
 
 CFLAGS=-I $(IDIR) -O4 -ffast-math -lstdc++ $(parallel) -lm
 
