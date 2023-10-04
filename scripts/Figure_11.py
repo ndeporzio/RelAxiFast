@@ -65,7 +65,8 @@ omega_b_LCDM = 0.02226 # Units: none
 h_LCDM = 0.70148 # Units: none 
 
 m_ax = np.logspace(-32., -22., 51) # Units: eV
-omega_ax = np.linspace(0.06, 0.10, 17)*omega_cdm_LCDM 
+omega_ax = np.linspace(0.095, 0.10, 3)*omega_cdm_LCDM 
+#omega_ax = np.linspace(0.06, 0.10, 17)*omega_cdm_LCDM 
 #m_ax = np.logspace(-32., -22., 201) # Units: eV
 #omega_ax = np.linspace(0.06, 0.10, 33)*omega_cdm_LCDM 
 #omega_ax = np.concatenate(( # Units: none
