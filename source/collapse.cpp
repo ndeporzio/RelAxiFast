@@ -831,12 +831,12 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
     //transfer evaluated at klong, for quick interpolation.
     double **transfer_nu_massless_klong;
     double **transfer_nu1_klong;
-    //double **transfer_matter_klong_test;
+    double **transfer_matter_klong;
 
     transfer_gamma_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
     transfer_nu_massless_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
     transfer_nu1_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
-    //transfer_matter_klong_test = allocate_2D_array(cosmo->N_klong,Nz_transfer);
+    transfer_matter_klong = allocate_2D_array(cosmo->N_klong,Nz_transfer);
 
     //we set the initial cdm+b transfer functions, and the 
     //interpolators for all fluids.
@@ -909,15 +909,15 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
             //printf("i_klong=%d, i=%ld, z=%.3le, Tf_gamma=%.1le, Tf_nu=%.1le \n",i_klong, i, z,transfer_gamma_klong[i_klong][i],transfer_nu1_klong[i_klong][i]);
             //printf("k_long=%.1le, z=%.1le , T_g=%.1le \n",k_long, z, transfer_gamma_klong[i_klong][i]);
 
-            //transfer_matter_klong_test[i_klong][i]=interpol_2D(
-            //    transfer_matter, 
-            //    zlist_transfer, 
-            //    Nz_transfer, 
-            //    k_transfer_array, 
-            //    length_transfer, 
-            //    z, 
-            //    k_long
-            //);    
+            transfer_matter_klong[i_klong][i]=interpol_2D(
+                transfer_matter, 
+                zlist_transfer, 
+                Nz_transfer, 
+                k_transfer_array, 
+                length_transfer, 
+                z, 
+                k_long
+            );    
         }
     }
 
@@ -1351,7 +1351,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
                             delta_long, 
                             zlist_transfer,
                             Ti_klong[i_klong],
-                            //transfer_matter_klong_test[i_klong], 
+                            transfer_matter_klong[i_klong], 
                             transfer_gamma_klong[i_klong], 
                             transfer_nu_massless_klong[i_klong],
                             transfer_axion_klong[i_klong],
@@ -1831,7 +1831,7 @@ int collapse(Cosmology *cosmo, double *zlist_transfer){
                                     delta_long,
                                     zlist_transfer,
                                     Ti_klong[i_klong],
-                                    //transfer_matter_klong_test[i_klong],
+                                    transfer_matter_klong[i_klong],
                                     transfer_gamma_klong[i_klong],
                                     transfer_nu_massless_klong[i_klong],
                                     transfer_axion_klong[i_klong],
@@ -3384,7 +3384,7 @@ double find_z_collapse_masslessnu_axion(
     const double delta_long, 
     double * const  zlist_transfer,
     const double Tfm_klong, 
-    //double * const Tfm_klong,
+    double * const transfer_matter_klong,
     double * const transfer_gamma_klong, 
     double * const transfer_nu_klong, 
     double * const transfer_axion_klong,
@@ -3436,13 +3436,14 @@ double find_z_collapse_masslessnu_axion(
     double z=zi;
 
     const double T_matter=Tfm_klong;
-    //double T_matter = interpol(
-    //    Tfm_klong, 
-    //    zlist_transfer, 
-    //    Nz_transfer, 
-    //    zi
-    //    cosmo->z_collapse
-    //);
+    //printf("T_matter = %le \n", T_matter); 
+    double T_matter_z = interpol(
+        transfer_matter_klong, 
+        zlist_transfer, 
+        Nz_transfer, 
+        z
+    );
+    //printf("T_matter_zi = %le \n", T_matter_z);
 
     double rhoaxion_0=rholistaxion_EoS[0];//axion at z=0.  
     //we set the initial H. All these are average densities.
@@ -3541,14 +3542,18 @@ double find_z_collapse_masslessnu_axion(
 
     double Rpp1, Rpp2; //d^2R(z)/dz^2
 
-    double Oaxion =( 
+    double Oaxion =( //WARNING! THIS NEEDS CHECKED!  
             (1.0+3.0*waxion_z + delta_axion_z*(1.0+3.0*csq_ef_axion_z))*Omaxionbar_z
         ); //CAUTION, USING THE EFFECTIVE SOUND SPEED OF AXION!
     FILE * fcollapse_output;
-    fcollapse_output=fopen("collapse_output.dat", "w");
-    fprintf(fcollapse_output, "z\t w\t ceff2\t Oaxion\t rhoaxion\t k_long\t delta_long\t delta_axion_z\t T_axion_z\t T_matter\t R \t Rp\n");
-    fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n",
-            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter, R1, Rp1);
+    int lengthname=200;
+    char filename[50];
+    lengthname=std::sprintf(filename,"collapse_output_log10klong_%.4f_deltalong_%.4f.dat",std::log10(k_long), delta_long);
+    fcollapse_output=fopen(filename, "w");
+    //fcollapse_output=fopen("collapse_output.dat", "w");
+    fprintf(fcollapse_output, "z\t w\t ceff2\t Oaxion\t rhoaxion\t k_long\t delta_long\t delta_axion_z\t T_axion_z\t T_matter_zi\t T_matter_z\t R \t Rp\n");
+    fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n",
+            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter, T_matter_z, R1, Rp1);
     /////////////////////////////////////////////////////////
     ////    here we solve for the collapse                     
     /////////////////////////////////////////////////////////
@@ -3589,12 +3594,13 @@ double find_z_collapse_masslessnu_axion(
 
         //we update all z-dependent stuff to the next z
         OmGbar= cosmo->OmegaG * pow(1.+z_next,4.);
-        //T_matter = interpol(
-        //    Tfm_klong, 
-        //    zlist_transfer, 
-        //    Nz_transfer, 
-        //    z_next
-        //);
+        T_matter_z = interpol(
+            transfer_matter_klong,
+            zlist_transfer,
+            Nz_transfer,
+            z_next
+        );
+        //printf("T_matter_z = %le , z = %le \n", T_matter_z, z_next);
         T_gamma = interpol(
             transfer_gamma_klong, 
             zlist_transfer, 
@@ -3689,8 +3695,8 @@ double find_z_collapse_masslessnu_axion(
         Rp2 = Rp1 + zstep_lin/2.0 * (Rpp1 + Rpp2);
 
         //debugging
-        fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n", 
-            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter, R1, Rp1); 
+        fprintf(fcollapse_output, "%le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\t %le\n", 
+            z, waxion_z, csq_ef_axion_z, Oaxion, rhoaxion_z, k_long, delta_long, delta_axion_z, T_axion_z, T_matter, T_matter_z, R1, Rp1); 
     }
     fclose(fcollapse_output);
     FILE * cs2file;
